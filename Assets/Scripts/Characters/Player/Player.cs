@@ -84,10 +84,15 @@ public class Player : MonoBehaviour
 
     private void ChangeState(PlayerMovementStates state)
     {
+        if (currentState == state)
+        {
+            return;
+        }
+
         switch(state)
         {
             case PlayerMovementStates.IDLE:
-                ResetVelocity();
+                ResetHorizVelocity();
                 speedModifier = 0f;
 
                 currentState = PlayerMovementStates.IDLE;
@@ -192,9 +197,9 @@ public class Player : MonoBehaviour
         return directionAngle;
     }
 
-    private void ResetVelocity()
+    private void ResetHorizVelocity()
     {
-        rb.velocity = Vector3.zero;
+        rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
     }
 
 
