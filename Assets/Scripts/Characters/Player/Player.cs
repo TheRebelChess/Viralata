@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     // Private variables
     private PlayerMovementStates currentState;
     private Vector2 movementInput;
+    private Animator playerAnimator;
 
     private float baseSpeed;
     private float speedModifier;
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         input = GetComponent<PlayerInput>();
+        playerAnimator = GetComponentInChildren<Animator>();
 
         mainCameraTransform = Camera.main.transform;
     }
@@ -94,18 +96,21 @@ public class Player : MonoBehaviour
             case PlayerMovementStates.IDLE:
                 ResetHorizVelocity();
                 speedModifier = 0f;
+                playerAnimator.SetTrigger("Idle");
 
                 currentState = PlayerMovementStates.IDLE;
                 break;
 
             case PlayerMovementStates.WALKING:
                 speedModifier = playerData.walkSpeedModifier;
+                playerAnimator.SetTrigger("Walk");
 
                 currentState = PlayerMovementStates.WALKING;
                 break;
 
             case PlayerMovementStates.RUNNING:
                 speedModifier = playerData.runSpeedModifier;
+                playerAnimator.SetTrigger("Run");
 
                 currentState = PlayerMovementStates.RUNNING;
                 break;
