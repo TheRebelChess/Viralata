@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -170,13 +167,11 @@ public class Player : MonoBehaviour
 
         float movementSpeed = baseSpeed * speedModifier;
 
-        // Salva a velocidade horizontal do player
         Vector3 currentPlayerHV = rb.velocity;
-
         currentPlayerHV.y = 0f;
-        //
 
-        //Debug.Log(targetRotationDirection * movementSpeed - currentPlayerHV);
+        // Subtrai a velocidade horizontal do player pra
+        // não somar os vetores em cada AddForce
         rb.AddForce(targetRotationDirection * movementSpeed - currentPlayerHV,
                                         ForceMode.VelocityChange);
     }
@@ -255,7 +250,6 @@ public class Player : MonoBehaviour
             return;
         }
         Jump();
-        //ChangeState(PlayerMovementStates.AIRBORNE);
     }
 
     private void RemoveInputActionsCallbacks()
