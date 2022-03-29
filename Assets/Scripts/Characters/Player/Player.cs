@@ -11,7 +11,8 @@ public class Player : MonoBehaviour
     {
         IDLE,
         WALKING,
-        RUNNING
+        RUNNING,
+        AIRBORNE
     }
 
 
@@ -29,6 +30,7 @@ public class Player : MonoBehaviour
     private float dampedTargetRotationPassedTime;
 
     private bool shouldWalk;
+    private bool isGrounded;
 
 
     // Public Variables
@@ -37,6 +39,9 @@ public class Player : MonoBehaviour
     [HideInInspector] public Transform mainCameraTransform;
 
     public PlayerData playerData;
+    public float jumpHeight = 5f;
+    public Transform groundCheckTransform;
+    public LayerMask groundCheckLayerMask;
 
     private void Awake()
     {
@@ -65,10 +70,21 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        //Debug.Log(currentState);
         movementInput = input.playerActions.Movement.ReadValue<Vector2>();
+        isGrounded = Physics.CheckSphere(groundCheckTransform.position, .2f, groundCheckLayerMask);
 
-        if (movementInput != Vector2.zero)
+        if (!isGrounded)
         {
+            ChangeState(PlayerMovementStates.AIRBORNE);
+        }
+        else if(movementInput != Vector2.zero)
+        {  
+            if (currentState == PlayerMovementStates.AIRBORNE)
+            {
+                // Note(Nicole): Placeholder pra animação caindo em movimento
+                playerAnimator.SetTrigger("Grounded");
+            }
             if (shouldWalk)
             {
                 ChangeState(PlayerMovementStates.WALKING);
@@ -80,6 +96,11 @@ public class Player : MonoBehaviour
         }
         else
         {
+            if (currentState == PlayerMovementStates.AIRBORNE)
+            {
+                // NOTE(Nicole): Placeholder pra animação caindo parado
+                playerAnimator.SetTrigger("Grounded");
+            }
             ChangeState(PlayerMovementStates.IDLE);
         }
     }
@@ -113,6 +134,12 @@ public class Player : MonoBehaviour
                 playerAnimator.SetTrigger("Run");
 
                 currentState = PlayerMovementStates.RUNNING;
+                break;
+
+            case PlayerMovementStates.AIRBORNE:
+                playerAnimator.SetTrigger("Airborne");
+
+                currentState = PlayerMovementStates.AIRBORNE;
                 break;
 
             default:
@@ -149,6 +176,7 @@ public class Player : MonoBehaviour
         currentPlayerHV.y = 0f;
         //
 
+        //Debug.Log(targetRotationDirection * movementSpeed - currentPlayerHV);
         rb.AddForce(targetRotationDirection * movementSpeed - currentPlayerHV,
                                         ForceMode.VelocityChange);
     }
@@ -207,15 +235,33 @@ public class Player : MonoBehaviour
         rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
     }
 
+    private void Jump()
+    {
+        Vector3 jumpForce = new Vector3(0f, jumpHeight, 0f);
+        rb.AddForce(jumpForce, ForceMode.VelocityChange);
+    }
+
 
     private void AddInputActionsCallbacks()
     {
         input.playerActions.WalkToggle.started += OnWalkToggleStarted;
+        input.playerActions.Jump.started += OnJumpStarted;
+    }
+
+    private void OnJumpStarted(InputAction.CallbackContext obj)
+    {   
+        if (currentState == PlayerMovementStates.AIRBORNE)
+        {
+            return;
+        }
+        Jump();
+        //ChangeState(PlayerMovementStates.AIRBORNE);
     }
 
     private void RemoveInputActionsCallbacks()
     {
         input.playerActions.WalkToggle.started -= OnWalkToggleStarted;
+        input.playerActions.Jump.started -= OnJumpStarted;
     }
 
     private void OnWalkToggleStarted(InputAction.CallbackContext context)

@@ -62,6 +62,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": ""Clamp(min=-0.1,max=0.1),Invert"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""c64cc1cf-d08b-46d3-8079-cac90b9b5154"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -196,6 +205,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Zoom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""98a6f66f-da00-4f6e-9cb6-afc9cf9702a2"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -208,6 +228,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_WalkToggle = m_Player.FindAction("WalkToggle", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
+        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -271,6 +292,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_WalkToggle;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Zoom;
+    private readonly InputAction m_Player_Jump;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -279,6 +301,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @WalkToggle => m_Wrapper.m_Player_WalkToggle;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
+        public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -300,6 +323,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Zoom.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnZoom;
                 @Zoom.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnZoom;
                 @Zoom.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnZoom;
+                @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -316,6 +342,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Zoom.started += instance.OnZoom;
                 @Zoom.performed += instance.OnZoom;
                 @Zoom.canceled += instance.OnZoom;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
         }
     }
@@ -326,5 +355,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnWalkToggle(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }
