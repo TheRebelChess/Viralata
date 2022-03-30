@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -11,6 +12,15 @@ public class Enemy : MonoBehaviour
     }
 
 
+    // Note(Nicole): Colocar no SO?
+    private struct AttackType
+    {
+        public int BaseDamage;
+        public float AnimationTime;
+    };
+
+    AttackType baseAttack;
+
     // Private variables
     private EnemyMovementStates currentState;
     private Animator enemyAnimator;
@@ -19,12 +29,18 @@ public class Enemy : MonoBehaviour
     private float baseSpeed;
     private float speedModifier;
 
+    private bool isDisengaging;
+    private bool isAttacking;
+    private bool canSeePlayer;
+
 
     // Public Variables
     [HideInInspector] public PlayerInput input;
     [HideInInspector] public Rigidbody rb;
 
-    public Transform home; 
+    public Transform home;
+    public Transform attackOrigin;
+    public LayerMask checkPlayerLM;
 
     // TODO(Nicole): Colocar no SO do inimigo
     public float walkingSpeed = 2f;
@@ -41,17 +57,37 @@ public class Enemy : MonoBehaviour
         ChangeState(EnemyMovementStates.PATROL);
 
         baseSpeed = 1f;
+
+        //AttackType baseAttack = new AttackType();
+        baseAttack.BaseDamage = 5;
+        baseAttack.AnimationTime = 1f;
     }
 
     private void Update()
     {
-        Debug.Log(currentState);
+        //Debug.Log(currentState);
+
+        if (isAttacking)
+            return;
 
         if (target == null)
         {
             ChangeState(EnemyMovementStates.PATROL);
             return;
         }
+    }
+
+    IEnumerator Attack(AttackType type)
+    {
+        yield return new WaitForSeconds(type.AnimationTime);
+        RaycastHit hit;
+        Debug.DrawRay(attackOrigin.position, transform.forward * 2f, Color.red);
+        if(Physics.Raycast(attackOrigin.position, transform.forward, out hit, 2f, checkPlayerLM))
+        {
+            Debug.Log($"Hit {hit.transform.name} for {baseAttack.BaseDamage} damage");
+        }
+
+        isAttacking = false;
     }
 
     private void ChangeState(EnemyMovementStates state)
@@ -100,7 +136,7 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (target == null)
+        if (target == null || isAttacking)
         {
             return;
         }
@@ -112,7 +148,7 @@ public class Enemy : MonoBehaviour
     {
         Vector3 movementDirection = target.position - transform.position;
 
-        if (movementDirection.magnitude < 2f)
+        if (movementDirection.magnitude < 1f)
         {
             if (target == home)
             {
@@ -122,6 +158,9 @@ public class Enemy : MonoBehaviour
             else
             {
                 ChangeState(EnemyMovementStates.COMBAT);
+
+                isAttacking = true;
+                StartCoroutine(Attack(ChooseAttack()));
             }
         }
         else if (target != home)
@@ -138,6 +177,24 @@ public class Enemy : MonoBehaviour
 
         rb.AddForce(movementDirection * movementSpeed - GetHorizVelocity(),
                                         ForceMode.VelocityChange);
+    }
+
+    private AttackType ChooseAttack()
+    {
+        // Some logic to choose an attack
+        return baseAttack;
+    }
+
+    IEnumerator ReleaseTarget()
+    {
+        Debug.Log("Trying to release");
+        yield return new WaitForSeconds(3f);
+        if (!canSeePlayer)
+        {
+            Debug.Log("Released");
+            SetTargetHome();
+        }
+        Debug.Log("Couldn't release");
     }
 
     private Vector3 GetHorizVelocity()
@@ -157,7 +214,9 @@ public class Enemy : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            SetTargetChase(other.transform);
+            canSeePlayer = true;
+            if(target != other.transform)
+                SetTargetChase(other.transform);
         }
     }
 
@@ -165,8 +224,8 @@ public class Enemy : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            UnsetTarget();
-            SetTargetHome();
+            canSeePlayer = false;
+            StartCoroutine(ReleaseTarget());
         }
     }
 
