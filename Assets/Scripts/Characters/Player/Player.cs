@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,7 +11,8 @@ public class Player : MonoBehaviour
         IDLE,
         WALKING,
         RUNNING,
-        AIRBORNE
+        AIRBORNE,
+        LEAVING_COMBAT // GAMBIARRA
     }
 
 
@@ -21,6 +24,8 @@ public class Player : MonoBehaviour
     private float baseSpeed;
     private float speedModifier;
 
+    private float currentCombatTimer;
+
     private float currentTargetRotation;
     private float timeToReachTargetRotation;
     private float dampedTargetRotationCurrentVelocity;
@@ -28,6 +33,9 @@ public class Player : MonoBehaviour
 
     private bool shouldWalk;
     private bool isGrounded;
+    private bool inCombat;
+    private bool canAttack;
+    private bool isAttacking;
 
 
     // Public Variables
@@ -39,6 +47,10 @@ public class Player : MonoBehaviour
     public float jumpHeight = 5f;
     public Transform groundCheckTransform;
     public LayerMask groundCheckLayerMask;
+    public float combatTimer = 5f;
+
+    // TODO(Nicole): Colocar no struct de ataque
+    public float attackCooldown = 2f;
 
     private void Awake()
     {
@@ -58,6 +70,7 @@ public class Player : MonoBehaviour
         baseSpeed = playerData.baseSpeed;
         timeToReachTargetRotation = playerData.timeToReachTargetRotation;
         shouldWalk = false;
+        canAttack = true;
     }
 
     private void OnDestroy()
@@ -71,11 +84,24 @@ public class Player : MonoBehaviour
         movementInput = input.playerActions.Movement.ReadValue<Vector2>();
         isGrounded = Physics.CheckSphere(groundCheckTransform.position, .2f, groundCheckLayerMask);
 
+        if (inCombat)
+        {
+            // Decrease combat cooldown
+            currentCombatTimer -= Time.deltaTime;
+            if (currentCombatTimer <= 0)
+            {
+                inCombat = false;
+                currentState = PlayerMovementStates.LEAVING_COMBAT;
+            }
+        }
+
         if (!isGrounded)
         {
             ChangeState(PlayerMovementStates.AIRBORNE);
+            return;
         }
-        else if(movementInput != Vector2.zero)
+        
+        if(movementInput != Vector2.zero)
         {  
             if (currentState == PlayerMovementStates.AIRBORNE)
             {
@@ -114,7 +140,11 @@ public class Player : MonoBehaviour
             case PlayerMovementStates.IDLE:
                 ResetHorizVelocity();
                 speedModifier = 0f;
-                playerAnimator.SetTrigger("Idle");
+
+                if (inCombat)
+                    playerAnimator.SetTrigger("Combat");
+                else
+                    playerAnimator.SetTrigger("Idle");
 
                 currentState = PlayerMovementStates.IDLE;
                 break;
@@ -147,7 +177,8 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (currentState == PlayerMovementStates.IDLE)
+        if (currentState == PlayerMovementStates.IDLE
+            || isAttacking)
         {
             return;
         }
@@ -241,21 +272,82 @@ public class Player : MonoBehaviour
     {
         input.playerActions.WalkToggle.started += OnWalkToggleStarted;
         input.playerActions.Jump.started += OnJumpStarted;
-    }
-
-    private void OnJumpStarted(InputAction.CallbackContext obj)
-    {   
-        if (currentState == PlayerMovementStates.AIRBORNE)
-        {
-            return;
-        }
-        Jump();
+        input.playerActions.Attack1.started += OnAttack1Started;
+        input.playerActions.Attack2.started += OnAttack2Started;
     }
 
     private void RemoveInputActionsCallbacks()
     {
         input.playerActions.WalkToggle.started -= OnWalkToggleStarted;
         input.playerActions.Jump.started -= OnJumpStarted;
+        input.playerActions.Attack1.started -= OnAttack1Started;
+        input.playerActions.Attack2.started -= OnAttack2Started;
+    }
+
+    private void OnAttack1Started(InputAction.CallbackContext obj)
+    {
+        if (!canAttack)
+            return;
+
+        if (currentState == PlayerMovementStates.AIRBORNE)
+        {
+            // Ataque1 aereo
+            return;
+        }
+        Punch();
+        StartCoroutine(AttackCooldown());
+    }
+
+    private void Punch()
+    {
+        if (!inCombat)
+        {
+            inCombat = true;
+        }
+        playerAnimator.SetTrigger("Punch");
+
+        currentCombatTimer = combatTimer;
+    }
+
+    private void OnAttack2Started(InputAction.CallbackContext obj)
+    {
+        if (!canAttack)
+            return;
+
+        if (currentState == PlayerMovementStates.AIRBORNE)
+        {
+            // Ataque2 aereo
+            return;
+        }
+        Kick();
+        StartCoroutine(AttackCooldown());
+    }
+
+    IEnumerator AttackCooldown()
+    {
+        canAttack = false;
+        isAttacking = true;
+
+        yield return new WaitForSeconds(attackCooldown);
+
+        canAttack = true;
+        isAttacking = false;
+    }
+
+    private void Kick()
+    {
+        if (!inCombat)
+        {
+            inCombat = true;
+        }
+        playerAnimator.SetTrigger("Kick");
+
+        currentCombatTimer = combatTimer;
+    }
+
+    private void OnJumpStarted(InputAction.CallbackContext obj)
+    {   
+        Jump();
     }
 
     private void OnWalkToggleStarted(InputAction.CallbackContext context)
