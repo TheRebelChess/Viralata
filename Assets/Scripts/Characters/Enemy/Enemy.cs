@@ -8,7 +8,8 @@ public class Enemy : MonoBehaviour
         PATROL,
         CHASING,
         RETURNING,
-        COMBAT
+        COMBAT,
+        DEAD
     }
 
 
@@ -45,6 +46,7 @@ public class Enemy : MonoBehaviour
     // TODO(Nicole): Colocar no SO do inimigo
     public float walkingSpeed = 2f;
     public float runningSpeed = 4f;
+    public int health = 3;
 
     private void Awake()
     {
@@ -59,15 +61,16 @@ public class Enemy : MonoBehaviour
         baseSpeed = 1f;
 
         //AttackType baseAttack = new AttackType();
-        baseAttack.BaseDamage = 5;
-        baseAttack.AnimationTime = 1f;
+        baseAttack.BaseDamage = 2;
+        baseAttack.AnimationTime = 2f;
     }
 
     private void Update()
     {
         //Debug.Log(currentState);
 
-        if (isAttacking)
+        if (currentState == EnemyMovementStates.DEAD
+            || isAttacking)
             return;
 
         if (target == null)
@@ -85,6 +88,7 @@ public class Enemy : MonoBehaviour
         if(Physics.Raycast(attackOrigin.position, transform.forward, out hit, 2f, checkPlayerLM))
         {
             Debug.Log($"Hit {hit.transform.name} for {baseAttack.BaseDamage} damage");
+            hit.transform.GetComponent<Player>()?.Hit(baseAttack.BaseDamage);
         }
 
         isAttacking = false;
@@ -129,6 +133,16 @@ public class Enemy : MonoBehaviour
                 currentState = EnemyMovementStates.COMBAT;
                 break;
 
+            case EnemyMovementStates.DEAD:
+                ResetHorizVelocity();
+                enemyAnimator.SetTrigger("Death");
+
+                this.GetComponent<Rigidbody>().isKinematic = true;
+                this.enabled = false;
+
+                currentState = EnemyMovementStates.DEAD;
+                break;
+
             default:
                 break;
         }
@@ -136,7 +150,9 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (target == null || isAttacking)
+        if (target == null 
+            || currentState == EnemyMovementStates.DEAD
+            || isAttacking)
         {
             return;
         }
@@ -250,5 +266,15 @@ public class Enemy : MonoBehaviour
     public void UnsetTarget()
     {
         target = null;
+    }
+
+    public void Hit(int damage)
+    {
+        health -= damage;
+
+        if(health <= 0f)
+        {
+            ChangeState(EnemyMovementStates.DEAD);
+        }
     }
 }

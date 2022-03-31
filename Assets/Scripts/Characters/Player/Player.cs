@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
         WALKING,
         RUNNING,
         AIRBORNE,
+        DEAD,
         LEAVING_COMBAT // GAMBIARRA
     }
 
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     private PlayerMovementStates currentState;
     private Vector2 movementInput;
     private Animator playerAnimator;
+    private Transform attackOrigin;
 
     private float baseSpeed;
     private float speedModifier;
@@ -36,6 +38,7 @@ public class Player : MonoBehaviour
     private bool inCombat;
     private bool canAttack;
     private bool isAttacking;
+    private bool isBlocking;
 
 
     // Public Variables
@@ -48,9 +51,16 @@ public class Player : MonoBehaviour
     public Transform groundCheckTransform;
     public LayerMask groundCheckLayerMask;
     public float combatTimer = 5f;
+    public LayerMask hitableMask;
+
 
     // TODO(Nicole): Colocar no struct de ataque
     public float attackCooldown = 2f;
+
+    // TODO(Nicole): Colocar no struct de stats do player(?)
+    public float health = 10f;
+    public int currentDamage = 1;
+    public int blockModifier = 2;
 
     private void Awake()
     {
@@ -59,6 +69,9 @@ public class Player : MonoBehaviour
         playerAnimator = GetComponentInChildren<Animator>();
 
         mainCameraTransform = Camera.main.transform;
+
+        // TODO(Nicole): Fazer isso direito
+        attackOrigin = transform.GetChild(1).transform;
     }
 
     private void Start()
@@ -71,6 +84,7 @@ public class Player : MonoBehaviour
         timeToReachTargetRotation = playerData.timeToReachTargetRotation;
         shouldWalk = false;
         canAttack = true;
+
     }
 
     private void OnDestroy()
@@ -80,6 +94,9 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (currentState == PlayerMovementStates.DEAD)
+            return;
+
         //Debug.Log(currentState);
         movementInput = input.playerActions.Movement.ReadValue<Vector2>();
         isGrounded = Physics.CheckSphere(groundCheckTransform.position, .2f, groundCheckLayerMask);
@@ -143,7 +160,7 @@ public class Player : MonoBehaviour
 
                 if (inCombat)
                     playerAnimator.SetTrigger("Combat");
-                else
+                else if (!isBlocking)
                     playerAnimator.SetTrigger("Idle");
 
                 currentState = PlayerMovementStates.IDLE;
@@ -151,22 +168,34 @@ public class Player : MonoBehaviour
 
             case PlayerMovementStates.WALKING:
                 speedModifier = playerData.walkSpeedModifier;
-                playerAnimator.SetTrigger("Walk");
+
+                if (!isBlocking)
+                    playerAnimator.SetTrigger("Walk");
 
                 currentState = PlayerMovementStates.WALKING;
                 break;
 
             case PlayerMovementStates.RUNNING:
                 speedModifier = playerData.runSpeedModifier;
-                playerAnimator.SetTrigger("Run");
+
+                if (!isBlocking)
+                    playerAnimator.SetTrigger("Run");
 
                 currentState = PlayerMovementStates.RUNNING;
                 break;
 
             case PlayerMovementStates.AIRBORNE:
-                playerAnimator.SetTrigger("Airborne");
+                if (!isBlocking)
+                    playerAnimator.SetTrigger("Airborne");
 
                 currentState = PlayerMovementStates.AIRBORNE;
+                break;
+
+            case PlayerMovementStates.DEAD:
+                speedModifier = 0f;
+                playerAnimator.SetTrigger("Death");
+
+                currentState = PlayerMovementStates.DEAD;
                 break;
 
             default:
@@ -178,6 +207,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         if (currentState == PlayerMovementStates.IDLE
+            || currentState == PlayerMovementStates.DEAD
             || isAttacking)
         {
             return;
@@ -274,7 +304,28 @@ public class Player : MonoBehaviour
         input.playerActions.Jump.started += OnJumpStarted;
         input.playerActions.Attack1.started += OnAttack1Started;
         input.playerActions.Attack2.started += OnAttack2Started;
+
+        input.playerActions.Block.started += OnBlockPressed;
+        input.playerActions.Block.canceled += OnBlockReleased;
     }
+    private void OnBlockPressed(InputAction.CallbackContext obj)
+    {
+        if (!CanExecuteAction())
+            return;
+
+        isBlocking = true;
+        playerAnimator.SetBool("isBlocking", true);
+    }
+
+    private void OnBlockReleased(InputAction.CallbackContext obj)
+    {
+        if (!CanExecuteAction())
+            return;
+
+        isBlocking = false;
+        playerAnimator.SetBool("isBlocking", false);
+    }
+
 
     private void RemoveInputActionsCallbacks()
     {
@@ -282,10 +333,16 @@ public class Player : MonoBehaviour
         input.playerActions.Jump.started -= OnJumpStarted;
         input.playerActions.Attack1.started -= OnAttack1Started;
         input.playerActions.Attack2.started -= OnAttack2Started;
+
+        input.playerActions.Block.started -= OnBlockPressed;
+        input.playerActions.Block.canceled -= OnBlockReleased;
     }
 
     private void OnAttack1Started(InputAction.CallbackContext obj)
     {
+        if (!CanExecuteAction())
+            return;
+
         if (!canAttack)
             return;
 
@@ -306,11 +363,26 @@ public class Player : MonoBehaviour
         }
         playerAnimator.SetTrigger("Punch");
 
+        RaycastHit hit;
+        Debug.DrawRay(attackOrigin.position, transform.forward * 2f, Color.red);
+        if (Physics.Raycast(attackOrigin.position, transform.forward, out hit, 2f, hitableMask))
+        {
+            // TODO(Nicole): Melhorar isso
+            if (hit.transform.tag == "Enemy")
+            {
+                hit.transform.GetComponent<Enemy>().Hit(currentDamage);
+                Debug.Log("Has hit");
+            }
+        }
+
         currentCombatTimer = combatTimer;
     }
 
     private void OnAttack2Started(InputAction.CallbackContext obj)
     {
+        if (!CanExecuteAction())
+            return;
+
         if (!canAttack)
             return;
 
@@ -342,16 +414,76 @@ public class Player : MonoBehaviour
         }
         playerAnimator.SetTrigger("Kick");
 
+        StartCoroutine(MultipleHits(.5f, 3, 1));
+        
+
         currentCombatTimer = combatTimer;
     }
 
+    IEnumerator MultipleHits(float cooldown, int numOfHits, int damage)
+    {
+        HitEnemy(damage);
+
+        yield return new WaitForSeconds(cooldown);
+
+        numOfHits--;
+
+        if (numOfHits > 0)
+        {
+            StartCoroutine(MultipleHits(cooldown, numOfHits, damage));
+            currentCombatTimer = combatTimer;
+        }
+        
+    }
+
+    private void HitEnemy(int damage)
+    {
+        RaycastHit hit;
+        Debug.DrawRay(attackOrigin.position, transform.forward * 2f, Color.red);
+        if (Physics.Raycast(attackOrigin.position, transform.forward, out hit, 2f, hitableMask))
+        {
+            // TODO(Nicole): Melhorar isso
+            if (hit.transform.tag == "Enemy")
+            {
+                hit.transform.GetComponent<Enemy>().Hit(currentDamage);
+                Debug.Log("Has hit");
+            }
+        }
+    }
+
     private void OnJumpStarted(InputAction.CallbackContext obj)
-    {   
+    {
+        if (!CanExecuteAction())
+            return;
+
         Jump();
     }
 
     private void OnWalkToggleStarted(InputAction.CallbackContext context)
     {
         shouldWalk = !shouldWalk;
+    }
+
+    public void Hit(int damage)
+    {
+        if (isBlocking)
+        {
+            damage -= blockModifier;
+        }
+        if (damage <= 0)
+            return;
+
+        health -= damage;
+
+        if (health <= 0)
+        {
+            ChangeState(PlayerMovementStates.DEAD);
+        }
+    }
+
+    private bool CanExecuteAction()
+    {
+        return !(currentState == PlayerMovementStates.DEAD
+            || isAttacking);
     }
 }

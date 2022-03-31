@@ -89,6 +89,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Block"",
+                    ""type"": ""Button"",
+                    ""id"": ""1edc3abd-a88a-46f4-a1bc-b87da34a1b55"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -248,8 +257,19 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3a58d832-1e65-4d24-b065-32e962813853"",
+                    ""id"": ""e8fc3325-0970-4977-9e8c-d03e58dc1bb0"",
                     ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ff72d004-6486-4545-87f3-775956d4f91c"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -271,6 +291,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Attack1 = m_Player.FindAction("Attack1", throwIfNotFound: true);
         m_Player_Attack2 = m_Player.FindAction("Attack2", throwIfNotFound: true);
+        m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -337,6 +358,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Attack1;
     private readonly InputAction m_Player_Attack2;
+    private readonly InputAction m_Player_Block;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -348,6 +370,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Attack1 => m_Wrapper.m_Player_Attack1;
         public InputAction @Attack2 => m_Wrapper.m_Player_Attack2;
+        public InputAction @Block => m_Wrapper.m_Player_Block;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -378,6 +401,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Attack2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
                 @Attack2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
                 @Attack2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
+                @Block.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
+                @Block.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
+                @Block.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -403,6 +429,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Attack2.started += instance.OnAttack2;
                 @Attack2.performed += instance.OnAttack2;
                 @Attack2.canceled += instance.OnAttack2;
+                @Block.started += instance.OnBlock;
+                @Block.performed += instance.OnBlock;
+                @Block.canceled += instance.OnBlock;
             }
         }
     }
@@ -416,5 +445,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnAttack1(InputAction.CallbackContext context);
         void OnAttack2(InputAction.CallbackContext context);
+        void OnBlock(InputAction.CallbackContext context);
     }
 }
