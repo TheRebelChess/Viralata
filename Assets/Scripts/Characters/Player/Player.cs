@@ -235,6 +235,8 @@ public class Player : MonoBehaviour
         // não somar os vetores em cada AddForce
         rb.AddForce(targetRotationDirection * movementSpeed - currentPlayerHV,
                                         ForceMode.VelocityChange);
+
+        Debug.Log(currentPlayerHV);
     }
 
     private float Rotate(Vector3 direction)
