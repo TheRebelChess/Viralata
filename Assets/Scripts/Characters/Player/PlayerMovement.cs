@@ -20,10 +20,16 @@ public class PlayerMovement : MonoBehaviour
     private float angleToRotatePlayer;
 
     private float baseSpeed = 5f;
+    private float runSpeedModifier = 0.8f;
+    private float rollSpeedModifier = 1f;
+    private float targetingSpeedModifier = 0.4f;
     private float currentSpeed = 0f;
     private float speedModifier = 0f;
+    private float previousSpeed = 0f;
+
 
     private bool isAimLocked = false;
+    private bool isRolling = false;
 
     public CinemachineVirtualCamera aimLockCamera;
 
@@ -37,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
         AddInputActionsCallbacks();
 
         timeToReachTargetRotation = 0.14f;
-        speedModifier = 0.8f;
+        speedModifier = runSpeedModifier;
         mainCameraTransform = Camera.main.transform;
         
     }
@@ -50,6 +56,13 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(isRolling);
+
+        if (isRolling)
+        {
+            return;
+        }
+
         movementInput = input.playerActions.Movement.ReadValue<Vector2>();
 
         currentSpeed = Mathf.Min(movementInput.magnitude, speedModifier);
@@ -68,7 +81,29 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isRolling)
+        {
+            Roll();
+            return;
+        }
+
         Move();
+    }
+
+    private void Roll()
+    {
+
+        Vector3 targetRotationDirection = Quaternion.Euler(0f, rb.rotation.eulerAngles.y, 0f) * Vector3.forward;
+
+        float movementSpeed = baseSpeed * currentSpeed;
+
+        Vector3 currentPlayerHV = rb.velocity;
+        currentPlayerHV.y = 0f;
+
+        // Subtrai a velocidade horizontal do player pra
+        // não somar os vetores em cada AddForce
+        rb.AddForce(targetRotationDirection * movementSpeed - currentPlayerHV,
+                                        ForceMode.VelocityChange);
     }
 
     private void Move()
@@ -168,6 +203,13 @@ public class PlayerMovement : MonoBehaviour
     private void AddInputActionsCallbacks()
     {
         input.playerActions.AimLock.started += OnAimLockStarted;
+        input.playerActions.Jump.started += OnRollStarted;
+    }
+
+    private void RemoveInputActionsCallbacks()
+    {
+        input.playerActions.AimLock.started -= OnAimLockStarted;
+        input.playerActions.Jump.started -= OnRollStarted;
     }
 
     private void OnAimLockStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -177,19 +219,57 @@ public class PlayerMovement : MonoBehaviour
         if (isAimLocked)
         {
             aimLockCamera.Priority = 20;
-            timeToReachTargetRotation = 0.01f;
-            speedModifier = 0.4f;
+            speedModifier = targetingSpeedModifier;
         }
         else
         {
             aimLockCamera.Priority = -10;
-            timeToReachTargetRotation = 0.14f;
-            speedModifier = 0.8f;
+            speedModifier = runSpeedModifier;
         }
     }
-
-    private void RemoveInputActionsCallbacks()
+    private void OnRollStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        input.playerActions.AimLock.started -= OnAimLockStarted;
+        if (isRolling)
+            return;
+        isRolling = true;
+        StartCoroutine(RollTimer());
+        movementInput = input.playerActions.Movement.ReadValue<Vector2>();
+
+        float directionAngle = Mathf.Atan2(movementInput.x, movementInput.y) * Mathf.Rad2Deg;
+
+        // Converte angulos negativos pra positivos
+        if (directionAngle < 0f)
+        {
+            directionAngle += 360f;
+        }
+
+        directionAngle += mainCameraTransform.eulerAngles.y;
+        angleToRotatePlayer = directionAngle;
+
+
+        // Evita que a rotação tenha angulos maiores que 360 graus
+        if (directionAngle > 360f)
+        {
+            directionAngle -= 360f;
+        }
+
+        Quaternion targetRotation = Quaternion.Euler(0f, directionAngle, 0f);
+
+        rb.MoveRotation(targetRotation);
+
+        playerAnimator.SetTrigger("Roll");
+
+    }
+
+    IEnumerator RollTimer()
+    {
+        previousSpeed = speedModifier;
+        speedModifier = rollSpeedModifier;
+        currentSpeed = rollSpeedModifier;
+        playerAnimator.speed = 1.3f;
+        yield return new WaitForSeconds(.9f);
+        playerAnimator.speed = 1f;
+        isRolling = false;
+        speedModifier = previousSpeed;
     }
 }
