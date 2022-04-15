@@ -1,3 +1,5 @@
+using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,9 +20,12 @@ public class PlayerMovement : MonoBehaviour
     private float angleToRotatePlayer;
 
     private float baseSpeed = 5f;
+    private float currentSpeed = 0f;
     private float speedModifier = 0f;
 
-    private bool isAimLocked;
+    private bool isAimLocked = false;
+
+    public CinemachineVirtualCamera aimLockCamera;
 
     // Start is called before the first frame update
     void Start()
@@ -29,8 +34,17 @@ public class PlayerMovement : MonoBehaviour
         playerAnimator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
 
+        AddInputActionsCallbacks();
+
         timeToReachTargetRotation = 0.14f;
+        speedModifier = 0.8f;
         mainCameraTransform = Camera.main.transform;
+        
+    }
+
+    private void OnDestroy()
+    {
+        RemoveInputActionsCallbacks();
     }
 
     // Update is called once per frame
@@ -38,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
     {
         movementInput = input.playerActions.Movement.ReadValue<Vector2>();
 
-        speedModifier = Mathf.Min(movementInput.magnitude, 0.8f);
+        currentSpeed = Mathf.Min(movementInput.magnitude, speedModifier);
 
         if (isAimLocked)
         {
@@ -47,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            playerAnimator.SetFloat("Speed", speedModifier);
+            playerAnimator.SetFloat("Speed", currentSpeed);
         } 
         
     }
@@ -61,13 +75,14 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 movementDirection = new Vector3(movementInput.x, 0f, movementInput.y);
 
+
         // Faz o player se mover em relação à camera
         float targetRotationYAngle = Rotate(movementDirection);
 
         Vector3 targetRotationDirection = Quaternion.Euler(0f, targetRotationYAngle, 0f) * Vector3.forward;
         //
 
-        float movementSpeed = baseSpeed * speedModifier;
+        float movementSpeed = baseSpeed * currentSpeed;
 
         Vector3 currentPlayerHV = rb.velocity;
         currentPlayerHV.y = 0f;
@@ -101,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
             directionAngle += 360f;
         }
 
-        if (direction.magnitude != 0)
+        if (isAimLocked || direction.magnitude != 0)
         {
             directionAngle += mainCameraTransform.eulerAngles.y;
             angleToRotatePlayer = directionAngle;
@@ -117,11 +132,12 @@ public class PlayerMovement : MonoBehaviour
         // Atualiza o target rotation
         if (directionAngle != currentTargetRotation)
         {
-            currentTargetRotation = directionAngle;
+            if (!isAimLocked)
+                currentTargetRotation = directionAngle;
+            else
+                currentTargetRotation = mainCameraTransform.eulerAngles.y;
             dampedTargetRotationPassedTime = 0f;
         }
-
-        Debug.Log(directionAngle);
 
         // Rotaciona em direção ao target
         float currentYAngle = rb.rotation.eulerAngles.y;
@@ -137,10 +153,43 @@ public class PlayerMovement : MonoBehaviour
 
             Quaternion targetRotation = Quaternion.Euler(0f, smoothedYAngle, 0f);
 
+            if (isAimLocked)
+            {
+                targetRotation = Quaternion.Euler(0f, currentTargetRotation, 0f);
+            }
+
             rb.MoveRotation(targetRotation);
         }
         //
 
         return directionAngle;
+    }
+
+    private void AddInputActionsCallbacks()
+    {
+        input.playerActions.AimLock.started += OnAimLockStarted;
+    }
+
+    private void OnAimLockStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        isAimLocked = !isAimLocked;
+        playerAnimator.SetBool("IsAiming", isAimLocked);
+        if (isAimLocked)
+        {
+            aimLockCamera.Priority = 20;
+            timeToReachTargetRotation = 0.01f;
+            speedModifier = 0.4f;
+        }
+        else
+        {
+            aimLockCamera.Priority = -10;
+            timeToReachTargetRotation = 0.14f;
+            speedModifier = 0.8f;
+        }
+    }
+
+    private void RemoveInputActionsCallbacks()
+    {
+        input.playerActions.AimLock.started -= OnAimLockStarted;
     }
 }

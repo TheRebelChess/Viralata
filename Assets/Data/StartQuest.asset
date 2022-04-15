@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 736dd17cb377363488269c93a288c725, type: 3}
+  m_Name: StartQuest
+  m_EditorClassIdentifier: 
+  description: "Excuse me, traveler. Please, help me out.  \n\nTime is of the essence.
+    A hunting party raided a nearby village not too long ago and they're probably
+    hiding in the nearby hills. We need to deal with them now before they either
+    attack again or grow in force. It's time to bring justice to those nasty humans.
+    If you don't mind, I'd like to come along. It's your choice though. I don't think
+    you'll have much troubles dealing with those humans. \n\nKill as many of them
+    as you'd like, just make sure you don't forget your main goal.  I wish I had
+    something better to reward you with, but what I have ain't too bad either. \n\nSafe
+    journey, hero. We believe in you."
+  objectives:
+  - type: 0
+    description: Kill 30 kobolds
+    acceptedObjects:
+    - {fileID: 8569313712668238791, guid: 47a57e8f0d683d14ab7b8f583ab53530, type: 3}
+    totalQuantity: 30
+    currentQuantity: 0
+    isComplete: 0
+  - type: 1
+    description: Collect 5 red flowers
+    acceptedObjects:
+    - {fileID: 434961820825822106, guid: 2495ee56217cdce4bab43ba2512284b9, type: 3}
+    totalQuantity: 5
+    currentQuantity: 0
+    isComplete: 0
+  nextQuest: {fileID: 11400000, guid: b93a75d34626aa14ab3f458d06ccb5a2, type: 2}
+  isComplete: 0
+  needReturn: 1
+  rewards:
+  - {fileID: 1109957903594978178, guid: a88ac97e9e25df3468b3bee9096751c9, type: 3}
+  - {fileID: 2419468302788800767, guid: 7b351d1a85e211240b2d368be1e9e9c6, type: 3}
+  xpGained: 300
+  moneyGained: 500

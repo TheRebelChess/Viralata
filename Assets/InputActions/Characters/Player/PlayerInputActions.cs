@@ -98,6 +98,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AimLock"",
+                    ""type"": ""Button"",
+                    ""id"": ""74bd3ea5-c68a-42d7-b432-6797a382b50d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -276,6 +285,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Attack2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0b02a6a2-70e0-4430-9530-956947c4950e"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AimLock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -292,6 +312,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_Attack1 = m_Player.FindAction("Attack1", throwIfNotFound: true);
         m_Player_Attack2 = m_Player.FindAction("Attack2", throwIfNotFound: true);
         m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
+        m_Player_AimLock = m_Player.FindAction("AimLock", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -359,6 +380,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Attack1;
     private readonly InputAction m_Player_Attack2;
     private readonly InputAction m_Player_Block;
+    private readonly InputAction m_Player_AimLock;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -371,6 +393,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Attack1 => m_Wrapper.m_Player_Attack1;
         public InputAction @Attack2 => m_Wrapper.m_Player_Attack2;
         public InputAction @Block => m_Wrapper.m_Player_Block;
+        public InputAction @AimLock => m_Wrapper.m_Player_AimLock;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -404,6 +427,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Block.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
                 @Block.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
                 @Block.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
+                @AimLock.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimLock;
+                @AimLock.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimLock;
+                @AimLock.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimLock;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -432,6 +458,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Block.started += instance.OnBlock;
                 @Block.performed += instance.OnBlock;
                 @Block.canceled += instance.OnBlock;
+                @AimLock.started += instance.OnAimLock;
+                @AimLock.performed += instance.OnAimLock;
+                @AimLock.canceled += instance.OnAimLock;
             }
         }
     }
@@ -446,5 +475,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnAttack1(InputAction.CallbackContext context);
         void OnAttack2(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
+        void OnAimLock(InputAction.CallbackContext context);
     }
 }
