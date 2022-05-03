@@ -27,11 +27,21 @@ public class PlayerMovement : MonoBehaviour
     private float speedModifier = 0f;
     private float previousSpeed = 0f;
 
+    private float attackTimer = 0f;
+    private float heavyAttackDelay = .5f;
+    private float maxAttackDelay = 1f;
+    private float attackDamage = 0f;
+
 
     private bool isAimLocked = false;
     private bool isRolling = false;
+    private bool isPreparingAttack = false;
+    private bool isAttacking = false;
+    private bool isBlocking = true;
 
     public CinemachineVirtualCamera aimLockCamera;
+    public Transform attackOrigin;
+    public LayerMask hitableMask;
 
     // Start is called before the first frame update
     void Start()
@@ -56,11 +66,29 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(isRolling);
-
-        if (isRolling)
+        if (isRolling || isAttacking )
         {
             return;
+        }
+
+        if (isPreparingAttack)
+        {
+            attackTimer += Time.deltaTime;
+
+            if (attackTimer > maxAttackDelay)
+            {
+                attackTimer = 0;
+                isPreparingAttack = false;
+                isAttacking = true;
+                attackDamage = 5f;
+                ResetHorizVel();
+                playerAnimator.SetTrigger("Attack");
+                playerAnimator.SetFloat("AttackForce", 1);
+                StartCoroutine(AttackTimer(1.5f));
+
+                return;
+            }
+
         }
 
         movementInput = input.playerActions.Movement.ReadValue<Vector2>();
@@ -87,7 +115,18 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        if (isAttacking)
+        {
+            Attack();
+            return;
+        }
+
         Move();
+    }
+
+    private void ResetHorizVel()
+    {
+        rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
     }
 
     private void Roll()
@@ -127,7 +166,6 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(targetRotationDirection * movementSpeed - currentPlayerHV,
                                         ForceMode.VelocityChange);
 
-        Debug.Log(currentPlayerHV);
     }
 
     private float Rotate(Vector3 direction)
@@ -200,16 +238,101 @@ public class PlayerMovement : MonoBehaviour
         return directionAngle;
     }
 
+
+    private void Attack()
+    {
+        RaycastHit hit;
+        Debug.DrawRay(attackOrigin.position, transform.forward * 2f, Color.red);
+        if (Physics.Raycast(attackOrigin.position, transform.forward, out hit, 2f, hitableMask))
+        {
+            // TODO(Nicole): Melhorar isso
+            if (hit.transform.tag == "Enemy")
+            {
+                hit.transform.GetComponent<Enemy>().Hit(attackDamage);
+                Debug.Log("Has hit");
+            }
+        }
+    }
+
+
     private void AddInputActionsCallbacks()
     {
         input.playerActions.AimLock.started += OnAimLockStarted;
         input.playerActions.Jump.started += OnRollStarted;
+
+        input.playerActions.Attack1.started += OnAttackStarted;
+        input.playerActions.Attack1.canceled += OnAttackReleased;
+
+        input.playerActions.Block.started += OnBlockPressed;
+        input.playerActions.Block.canceled += OnBlockReleased;
+    }
+    private void OnBlockPressed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        if (isAttacking || isRolling)
+            return;
+
+        isBlocking = true;
+        playerAnimator.SetBool("isBlocking", true);
+        Debug.Log(isBlocking);
+    }
+
+    private void OnBlockReleased(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        if (isAttacking || isRolling)
+            return;
+
+        isBlocking = false;
+        playerAnimator.SetBool("isBlocking", false);
+        Debug.Log(isBlocking);
+    }
+
+
+    private void OnAttackStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        if (isAttacking || isRolling)
+            return;
+
+        Debug.Log("Entrou");
+        isPreparingAttack = true;
+    }
+    private void OnAttackReleased(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        // Checagem pra ver se o ataque foi cancelado de outra forma
+        if (!isPreparingAttack)
+            return;
+
+        isPreparingAttack = false;
+        isAttacking = true;
+        ResetHorizVel();
+        playerAnimator.SetTrigger("Attack");
+
+        if (attackTimer >= heavyAttackDelay)
+        {
+            playerAnimator.SetFloat("AttackForce", 1);
+            attackDamage = 2f;
+            StartCoroutine(AttackTimer(1f));
+        }
+        else
+        {
+            playerAnimator.SetFloat("AttackForce", 0);
+            attackDamage = 1f;
+            StartCoroutine(AttackTimer(1f));
+        }
+
+
+        attackTimer = 0;
     }
 
     private void RemoveInputActionsCallbacks()
     {
         input.playerActions.AimLock.started -= OnAimLockStarted;
         input.playerActions.Jump.started -= OnRollStarted;
+
+        input.playerActions.Attack1.started -= OnAttackStarted;
+        input.playerActions.Attack1.canceled -= OnAttackReleased;
+
+        input.playerActions.Block.started -= OnBlockPressed;
+        input.playerActions.Block.canceled -= OnBlockReleased;
     }
 
     private void OnAimLockStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -271,5 +394,11 @@ public class PlayerMovement : MonoBehaviour
         playerAnimator.speed = 1f;
         isRolling = false;
         speedModifier = previousSpeed;
+    }
+
+    IEnumerator AttackTimer(float t)
+    {
+        yield return new WaitForSeconds(t);
+        isAttacking = false;
     }
 }
