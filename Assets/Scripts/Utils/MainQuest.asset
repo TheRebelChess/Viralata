@@ -13,9 +13,18 @@ MonoBehaviour:
   m_Name: MainQuest
   m_EditorClassIdentifier: 
   description: 
-  objectives: []
+  objectives:
+  - type: 0
+    description: 
+    acceptedObjects:
+    - {fileID: 0}
+    - {fileID: 0}
+    totalQuantity: 0
+    currentQuantity: 0
+    isComplete: 0
   nextQuest: {fileID: 0}
   isComplete: 0
   needReturn: 0
   rewards: []
   xpGained: 0
+  moneyGained: 0

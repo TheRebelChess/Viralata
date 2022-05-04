@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour
     // TODO(Nicole): Colocar no SO do inimigo
     public float walkingSpeed = 2f;
     public float runningSpeed = 4f;
-    public float health = 3;
+    public float health = 20;
 
     private void Awake()
     {
