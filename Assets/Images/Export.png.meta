@@ -1,0 +1,705 @@
+fileFormatVersion: 2
+guid: aedf937a84286a547b5e55a1a1c8cbe6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7871668601220253517
+    second: lifeBar
+  - first:
+      213: -5280777853086121427
+    second: emptylifeBar
+  - first:
+      213: 3170500844531466713
+    second: staminaBar
+  - first:
+      213: 722076238756049665
+    second: emptystaminaBar
+  - first:
+      213: 7391489554033366054
+    second: playerIcon
+  - first:
+      213: 7289320772064134711
+    second: skill1
+  - first:
+      213: -6102063198919296393
+    second: skill2
+  - first:
+      213: 8729072133955752925
+    second: skill3
+  - first:
+      213: -6422090765125870964
+    second: itemslot1
+  - first:
+      213: -8705591216554426165
+    second: itemslot2
+  - first:
+      213: -5270533193185268695
+    second: won'tuse
+  - first:
+      213: -8568955575427380967
+    second: itemDescription
+  - first:
+      213: 5211711928372202733
+    second: itemStatus
+  - first:
+      213: -471978321030411423
+    second: playerCoin
+  - first:
+      213: -7599496398051361356
+    second: playerSlotsItem
+  - first:
+      213: 4328561074524716912
+    second: itemImage
+  - first:
+      213: -4672811806373581259
+    second: itemBox
+  - first:
+      213: 7137015269091132590
+    second: itemBoxSelected
+  - first:
+      213: 9162672229537819288
+    second: missionDescription
+  - first:
+      213: -8767524116595853010
+    second: chatBox
+  - first:
+      213: 8084845649433181611
+    second: Bag
+  - first:
+      213: 5937354401751966955
+    second: missionLog
+  - first:
+      213: 1367129294559801261
+    second: Export_23
+  - first:
+      213: -5006453520078483777
+    second: playerOp
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: menuIcon
+      rect:
+        serializedVersion: 2
+        x: 2271
+        y: 857
+        width: 1176
+        height: 1199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f12cf666364e0d7e0800000000000000
+      internalID: -1742641940220886497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lifeBar
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 7597
+        width: 826
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b8bba2fc1732c290800000000000000
+      internalID: -7871668601220253517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: emptylifeBar
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 7487
+        width: 822
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d224d097588e6b6b0800000000000000
+      internalID: -5280777853086121427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: staminaBar
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 7372
+        width: 826
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d1cf5658b1effb20800000000000000
+      internalID: 3170500844531466713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: emptystaminaBar
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 7259
+        width: 826
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 103fdcf6384550a00800000000000000
+      internalID: 722076238756049665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: playerIcon
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 7270
+        width: 460
+        height: 455
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6245b2d6698d39660800000000000000
+      internalID: 7391489554033366054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skill1
+      rect:
+        serializedVersion: 2
+        x: 2929
+        y: 7193
+        width: 170
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73642c82f9ed82560800000000000000
+      internalID: 7289320772064134711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skill2
+      rect:
+        serializedVersion: 2
+        x: 3107
+        y: 7191
+        width: 165
+        height: 166
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77a7e67c9dd115ba0800000000000000
+      internalID: -6102063198919296393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skill3
+      rect:
+        serializedVersion: 2
+        x: 3278
+        y: 7193
+        width: 166
+        height: 166
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd391337bd4e32970800000000000000
+      internalID: 8729072133955752925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: itemslot1
+      rect:
+        serializedVersion: 2
+        x: 3641
+        y: 7575
+        width: 170
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8a1b5d897620e6a0800000000000000
+      internalID: -6422090765125870964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: itemslot2
+      rect:
+        serializedVersion: 2
+        x: 3644
+        y: 7384
+        width: 163
+        height: 164
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc04389a9e68f2780800000000000000
+      internalID: -8705591216554426165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: won'tuse
+      rect:
+        serializedVersion: 2
+        x: 2317
+        y: 544
+        width: 1170
+        height: 193
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92c694b3cfd4bd6b0800000000000000
+      internalID: -5270533193185268695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: itemDescription
+      rect:
+        serializedVersion: 2
+        x: 2565
+        y: 5141
+        width: 1184
+        height: 1694
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9194c8eed44f41980800000000000000
+      internalID: -8568955575427380967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: itemStatus
+      rect:
+        serializedVersion: 2
+        x: 2583
+        y: 4456
+        width: 1151
+        height: 556
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dec8a42d268b35840800000000000000
+      internalID: 5211711928372202733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: playerCoin
+      rect:
+        serializedVersion: 2
+        x: 3231
+        y: 4159
+        width: 487
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16b0c49b7323379f0800000000000000
+      internalID: -471978321030411423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: playerSlotsItem
+      rect:
+        serializedVersion: 2
+        x: 3310
+        y: 3541
+        width: 344
+        height: 469
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4bdb9423a4a298690800000000000000
+      internalID: -7599496398051361356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: itemImage
+      rect:
+        serializedVersion: 2
+        x: 2568
+        y: 3963
+        width: 404
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07ff0a31d53221c30800000000000000
+      internalID: 4328561074524716912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: itemBox
+      rect:
+        serializedVersion: 2
+        x: 1304
+        y: 5132
+        width: 260
+        height: 281
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53ee9d27b66d62fb0800000000000000
+      internalID: -4672811806373581259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: itemBoxSelected
+      rect:
+        serializedVersion: 2
+        x: 1616
+        y: 5119
+        width: 264
+        height: 302
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea447bed295cb0360800000000000000
+      internalID: 7137015269091132590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: missionDescription
+      rect:
+        serializedVersion: 2
+        x: 2177
+        y: 2236
+        width: 1456
+        height: 993
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89a20fac8d9582f70800000000000000
+      internalID: 9162672229537819288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chatBox
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3453
+        width: 2334
+        height: 612
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2932aea44f735680800000000000000
+      internalID: -8767524116595853010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bag
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 4132
+        width: 1187
+        height: 1292
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: badb3566844233070800000000000000
+      internalID: 8084845649433181611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: missionLog
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 1848
+        width: 955
+        height: 985
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be42706fe58b56250800000000000000
+      internalID: 5937354401751966955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Export_23
+      rect:
+        serializedVersion: 2
+        x: 915
+        y: 2953
+        width: 426
+        height: 477
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: daf644c99d409f210800000000000000
+      internalID: 1367129294559801261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: playerOp
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 2982
+        width: 762
+        height: 411
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbec73f7c01858ab0800000000000000
+      internalID: -5006453520078483777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
