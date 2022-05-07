@@ -34,6 +34,9 @@ public class PlayerMovement : MonoBehaviour
     private float maxAttackDelay = 1f;
     private float attackDamage = 0f;
 
+    private PlayerHealth playerHealthScript;
+    private float health = 10f;
+
 
     private bool isAimLocked = false;
     private bool isRolling = false;
@@ -46,6 +49,8 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask hitableMask;
 
     public QuestSystem questSystem;
+    public GameManager gameManager;
+
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
         input = GetComponent<PlayerInput>();
         playerAnimator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
+        playerHealthScript = GetComponent<PlayerHealth>();
 
         itemsInRage = new List<GameObject>();
 
@@ -434,6 +440,22 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(t);
         Attack();
         isAttacking = false;
+    }
+
+    public void TakeHit(int damage)
+    {
+        health -= (int) damage;
+
+        if (health < 0)
+            health = 0;
+
+        playerHealthScript.UpdateHealth(health);
+
+        if (health == 0)
+        {
+            gameManager.GameOver();
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealthOld : MonoBehaviour
 {
     public GameObject sliderObject;
     public Canvas canvas;

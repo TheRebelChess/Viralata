@@ -89,7 +89,7 @@ public class Enemy : MonoBehaviour
         if(Physics.Raycast(attackOrigin.position, transform.forward, out hit, 2f, checkPlayerLM))
         {
             Debug.Log($"Hit {hit.transform.name} for {baseAttack.BaseDamage} damage");
-            hit.transform.GetComponent<Player>()?.Hit(baseAttack.BaseDamage);
+            hit.transform.GetComponent<PlayerMovement>()?.TakeHit(baseAttack.BaseDamage);
         }
 
         isAttacking = false;
