@@ -12,7 +12,7 @@ public enum QuestType
 }
 
 [Serializable]
-public struct QuestObjective
+public class QuestObjective
 {
     public QuestType type;
     public string description;
@@ -20,8 +20,23 @@ public struct QuestObjective
     public int totalQuantity;
     [HideInInspector]
     public int currentQuantity;
-    [HideInInspector]
-    public bool isComplete;
+
+    public void IncrementQuantity()
+    {
+        currentQuantity++;
+    }
+
+    public bool CheckCompletion()
+    {
+        if (currentQuantity >= totalQuantity)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
 
 [CreateAssetMenu]
@@ -33,9 +48,29 @@ public class Quest : ScriptableObject
     public List<QuestObjective> objectives;
     public Quest nextQuest;
     [HideInInspector]
-    public bool isComplete;
+    public bool QuestCompleted = false;
     public bool needReturn;
     public List<GameObject> rewards;
     public float xpGained;
     public float moneyGained;
+
+    public bool CheckQuestCompletion()
+    {
+        for (int i = 0; i < objectives.Count; i++)
+        {
+            if (!objectives[i].CheckCompletion())
+                return false;
+        }
+        QuestCompleted = true;
+        return QuestCompleted;
+    }
+
+    public void InitializeQuest()
+    {
+        for (int i = 0; i < objectives.Count; i++)
+        {
+            objectives[i].currentQuantity = 0;
+        }
+        QuestCompleted = false;
+    }
 }

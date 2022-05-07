@@ -15,15 +15,12 @@ public struct TalkQuest
 public class QuestTarget : MonoBehaviour
 {
     public List<TalkQuest> quests;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public QuestSystem questSystem;
 
-    // Update is called once per frame
-    void Update()
+    // Start is called before the first frame update
+    
+    public void OnInteract()
     {
-        
+        questSystem.OnPlayerTalk(this.gameObject);
     }
 }

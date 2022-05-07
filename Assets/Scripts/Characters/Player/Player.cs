@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInput))]
@@ -372,7 +373,7 @@ public class Player : MonoBehaviour
             // TODO(Nicole): Melhorar isso
             if (hit.transform.tag == "Enemy")
             {
-                hit.transform.GetComponent<Enemy>().Hit(currentDamage);
+                hit.transform.GetComponent<Enemy>().TakeHit(currentDamage);
                 Debug.Log("Has hit");
             }
         }
@@ -447,7 +448,7 @@ public class Player : MonoBehaviour
             // TODO(Nicole): Melhorar isso
             if (hit.transform.tag == "Enemy")
             {
-                hit.transform.GetComponent<Enemy>().Hit(currentDamage);
+                hit.transform.GetComponent<Enemy>().TakeHit(currentDamage);
                 Debug.Log("Has hit");
             }
         }

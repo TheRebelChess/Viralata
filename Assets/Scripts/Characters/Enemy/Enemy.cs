@@ -38,6 +38,7 @@ public class Enemy : MonoBehaviour
     // Public Variables
     [HideInInspector] public PlayerInput input;
     [HideInInspector] public Rigidbody rb;
+    
 
     public Transform home;
     public Transform attackOrigin;
@@ -46,7 +47,7 @@ public class Enemy : MonoBehaviour
     // TODO(Nicole): Colocar no SO do inimigo
     public float walkingSpeed = 2f;
     public float runningSpeed = 4f;
-    public float health = 20;
+    public float health = 4;
 
     private void Awake()
     {
@@ -268,13 +269,17 @@ public class Enemy : MonoBehaviour
         target = null;
     }
 
-    public void Hit(float damage)
+    public bool TakeHit(float damage)
     {
         health -= damage;
 
         if(health <= 0f)
         {
             ChangeState(EnemyMovementStates.DEAD);
+            GetComponent<Collider>().enabled = false;
+            return true;
         }
+
+        return false;
     }
 }

@@ -12,18 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 736dd17cb377363488269c93a288c725, type: 3}
   m_Name: MainQuest
   m_EditorClassIdentifier: 
-  description: 
+  description: sdgbasdgasdgasdxgzs
   objectives:
   - type: 0
-    description: 
+    description: asgagasg
     acceptedObjects:
-    - {fileID: 0}
-    - {fileID: 0}
-    totalQuantity: 0
-    currentQuantity: 0
-    isComplete: 0
+    - {fileID: 3017221419246114416, guid: c11cb0ffa5da61e439e4ce2bcf3400a3, type: 3}
+    totalQuantity: 1
+    currentQuantity: 2
   nextQuest: {fileID: 0}
-  isComplete: 0
+  QuestCompleted: 1
   needReturn: 0
   rewards: []
   xpGained: 0

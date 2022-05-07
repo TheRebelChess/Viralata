@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private Transform mainCameraTransform;
 
+    private List<GameObject> itemsInRage;
+
     private float currentTargetRotation;
     private float timeToReachTargetRotation;
     private float dampedTargetRotationCurrentVelocity;
@@ -43,12 +45,16 @@ public class PlayerMovement : MonoBehaviour
     public Transform attackOrigin;
     public LayerMask hitableMask;
 
+    public QuestSystem questSystem;
+
     // Start is called before the first frame update
     void Start()
     {
         input = GetComponent<PlayerInput>();
         playerAnimator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
+
+        itemsInRage = new List<GameObject>();
 
         AddInputActionsCallbacks();
 
@@ -84,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
                 ResetHorizVel();
                 playerAnimator.SetTrigger("Attack");
                 playerAnimator.SetFloat("AttackForce", 1);
-                StartCoroutine(AttackTimer(1.5f));
+                StartCoroutine(AttackTimer(1f));
 
                 return;
             }
@@ -117,7 +123,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (isAttacking)
         {
-            Attack();
             return;
         }
 
@@ -248,8 +253,10 @@ public class PlayerMovement : MonoBehaviour
             // TODO(Nicole): Melhorar isso
             if (hit.transform.tag == "Enemy")
             {
-                hit.transform.GetComponent<Enemy>().Hit(attackDamage);
-                Debug.Log("Has hit");
+                bool hasKilled = false;
+                hasKilled = hit.transform.GetComponent<Enemy>().TakeHit(attackDamage);
+                if (hasKilled)
+                    questSystem.OnPlayerKill(hit.transform.gameObject);
             }
         }
     }
@@ -259,6 +266,7 @@ public class PlayerMovement : MonoBehaviour
     {
         input.playerActions.AimLock.started += OnAimLockStarted;
         input.playerActions.Jump.started += OnRollStarted;
+        input.playerActions.Interact.started += OnInteractStarted;
 
         input.playerActions.Attack1.started += OnAttackStarted;
         input.playerActions.Attack1.canceled += OnAttackReleased;
@@ -266,6 +274,31 @@ public class PlayerMovement : MonoBehaviour
         input.playerActions.Block.started += OnBlockPressed;
         input.playerActions.Block.canceled += OnBlockReleased;
     }
+
+    private void OnInteractStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        // Se tiver itens ao alcance, os coleta
+        if (itemsInRage.Count > 0)
+        {
+            GameObject gameObject = itemsInRage[itemsInRage.Count - 1];
+            itemsInRage.RemoveAt(itemsInRage.Count - 1);
+            questSystem.OnPlayerCollect(gameObject);
+            Destroy(gameObject);
+            return;
+        }
+
+        // Se não, tenta conversar com algum NPC
+        RaycastHit hit;
+        if (Physics.Raycast(attackOrigin.position, transform.forward, out hit, 2f, hitableMask))
+        {
+            if (hit.transform.tag == "NPC")
+            {
+                hit.transform.GetComponent<QuestGiver>()?.OnInteract();
+                hit.transform.GetComponent<QuestTarget>()?.OnInteract();
+            }
+        }
+    }
+
     private void OnBlockPressed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         if (isAttacking || isRolling)
@@ -273,7 +306,6 @@ public class PlayerMovement : MonoBehaviour
 
         isBlocking = true;
         playerAnimator.SetBool("isBlocking", true);
-        Debug.Log(isBlocking);
     }
 
     private void OnBlockReleased(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -316,7 +348,7 @@ public class PlayerMovement : MonoBehaviour
         {
             playerAnimator.SetFloat("AttackForce", 0);
             attackDamage = 1f;
-            StartCoroutine(AttackTimer(1f));
+            StartCoroutine(AttackTimer(.5f));
         }
 
 
@@ -327,6 +359,7 @@ public class PlayerMovement : MonoBehaviour
     {
         input.playerActions.AimLock.started -= OnAimLockStarted;
         input.playerActions.Jump.started -= OnRollStarted;
+        input.playerActions.Interact.started -= OnInteractStarted;
 
         input.playerActions.Attack1.started -= OnAttackStarted;
         input.playerActions.Attack1.canceled -= OnAttackReleased;
@@ -399,6 +432,34 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator AttackTimer(float t)
     {
         yield return new WaitForSeconds(t);
+        Attack();
         isAttacking = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Place" && this.gameObject.tag == "Player")
+        {
+            questSystem.OnPlayerReach(other.gameObject);
+            other.GetComponent<Collider>().enabled = false;
+        }
+
+        if (other.tag == "Item")
+        {
+            itemsInRage.Add(other.gameObject);
+            Debug.Log("Added item " + other.gameObject.name + " to list");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Item")
+        {
+            if (itemsInRage.Contains(other.gameObject))
+            {
+                itemsInRage.Remove(other.gameObject);
+                Debug.Log("Remove item " + other.gameObject.name + " from list");
+            }
+        }
     }
 }
