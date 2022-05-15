@@ -395,8 +395,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 130442888}
-  m_LocalRotation: {x: 0.10606978, y: -0.060251225, z: 0.0064390586, w: 0.99251074}
-  m_LocalPosition: {x: 6.521858, y: 2.979645, z: -21.374607}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.31, y: 1.9949999, z: -21.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -797,7 +797,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &210231621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -817,6 +817,10 @@ MonoBehaviour:
     Dialog: "Colete a esfera para completar essa quest. Aperte E perto da esfera
       para colet\xE1-la."
   questSystem: {fileID: 1333684288}
+  dialogCanvas: {fileID: 0}
+  dialogText: {fileID: 0}
+  questSelectionBox: {fileID: 0}
+  questSelectionText: {fileID: 0}
 --- !u!136 &210231622
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -894,6 +898,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &334586768 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 873637480994464271, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+  m_PrefabInstance: {fileID: 7343249259710158382}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &417119857 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3452393211865987372, guid: 090ee69709bb28e40ba3f93e96d5fe96, type: 3}
@@ -1086,6 +1095,10 @@ MonoBehaviour:
       just a myth. Could you give the marsh one last look? It would mean the world
       to me!\r"
   questSystem: {fileID: 0}
+  dialogCanvas: {fileID: 0}
+  dialogText: {fileID: 0}
+  questSelectionBox: {fileID: 0}
+  questSelectionText: {fileID: 0}
 --- !u!65 &496424723
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1716,6 +1729,7 @@ GameObject:
   - component: {fileID: 833265465}
   - component: {fileID: 833265464}
   - component: {fileID: 833265463}
+  - component: {fileID: 833265468}
   m_Layer: 9
   m_Name: Talk Quest Giver
   m_TagString: NPC
@@ -1739,9 +1753,18 @@ MonoBehaviour:
   - minLevelRequired: 0
     previousQuestRequired: {fileID: 0}
     quest: {fileID: 11400000, guid: 3ec6fb2423ba4aa41871a4a6daa688a3, type: 2}
+    Dialog: Converse com a capsula azul para completar essa quest. Para interagir
+      com um NPC se aproxime e aperte E.
+  - minLevelRequired: 0
+    previousQuestRequired: {fileID: 0}
+    quest: {fileID: 11400000, guid: ac6fbaddc06f09d4fb0ac2d91022d502, type: 2}
     Dialog: "Mate o Inimigo para completar essa quest. Para atacar use o bot\xE3o
       esquerdo do mouse."
   questSystem: {fileID: 1333684288}
+  dialogCanvas: {fileID: 1086944545}
+  dialogText: {fileID: 1189339362}
+  questSelectionBox: {fileID: 1962406678}
+  questSelectionText: {fileID: 6783732469164157127, guid: 12a9b6eafa0dfb84dbc5f3dcfe0148af, type: 3}
 --- !u!136 &833265464
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1819,6 +1842,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &833265468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 833265462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bdf18281f535284998de0ab719038aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogCanvas: {fileID: 1086944545}
+  dialogText: {fileID: 1189339362}
+  questSelectionBox: {fileID: 1962406678}
+  questSelectionText: {fileID: 334586768}
 --- !u!1 &872315794
 GameObject:
   m_ObjectHideFlags: 0
@@ -1868,7 +1907,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &996061600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1888,6 +1927,10 @@ MonoBehaviour:
     Dialog: "Mate o Inimigo para completar essa quest. Para atacar use o bot\xE3o
       esquerdo do mouse."
   questSystem: {fileID: 1333684288}
+  dialogCanvas: {fileID: 0}
+  dialogText: {fileID: 0}
+  questSelectionBox: {fileID: 0}
+  questSelectionText: {fileID: 0}
 --- !u!136 &996061601
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2060,11 +2103,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1008911182}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1086944545 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1830349615885975050, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+  m_PrefabInstance: {fileID: 7343249259710158382}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1170746351 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3452393211687212420, guid: 090ee69709bb28e40ba3f93e96d5fe96, type: 3}
   m_PrefabInstance: {fileID: 14648746}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1189339362 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4072941225800520027, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+  m_PrefabInstance: {fileID: 7343249259710158382}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1242351450
 GameObject:
   m_ObjectHideFlags: 0
@@ -2517,6 +2576,7 @@ GameObject:
   - component: {fileID: 1338378665}
   - component: {fileID: 1338378664}
   - component: {fileID: 1338378666}
+  - component: {fileID: 1338378667}
   m_Layer: 7
   m_Name: New Player
   m_TagString: Player
@@ -2616,6 +2676,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 417119857}
+--- !u!114 &1338378667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338378660}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef605d28e228b7a488d5eb0e35b3ae9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1400204706
 GameObject:
   m_ObjectHideFlags: 0
@@ -3331,7 +3403,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1902286059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3350,6 +3422,10 @@ MonoBehaviour:
     quest: {fileID: 11400000, guid: 18a2e127801345648ad68576ce46ab0e, type: 2}
     Dialog: Passe entre os pilares para completar essa quest.
   questSystem: {fileID: 1333684288}
+  dialogCanvas: {fileID: 0}
+  dialogText: {fileID: 0}
+  questSelectionBox: {fileID: 0}
+  questSelectionText: {fileID: 0}
 --- !u!136 &1902286060
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3906,6 +3982,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: aff941d8c57549e4fa740e970eeb92c3, type: 3}
   m_PrefabInstance: {fileID: 1941411409}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1962406678 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5883311121743144840, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+  m_PrefabInstance: {fileID: 7343249259710158382}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1992231769
 GameObject:
@@ -4696,3 +4777,100 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 444ca32b5f772704faaf9f1d419d005e, type: 3}
+--- !u!1001 &7343249259710158382
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_RootOrder
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869833374872679516, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1830349615885975050, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
+      propertyPath: m_Name
+      value: Dialog Canvas
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}

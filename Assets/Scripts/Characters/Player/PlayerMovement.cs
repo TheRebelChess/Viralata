@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
 {
     private Animator playerAnimator;
 
+    private PlayerInteraction playerInteraction;
+
     private Vector2 movementInput;
     private PlayerInput input;
     private Rigidbody rb;
@@ -59,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
         playerAnimator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
         playerHealthScript = GetComponent<PlayerHealth>();
+        playerInteraction = GetComponent<PlayerInteraction>();
 
         itemsInRage = new List<GameObject>();
 
@@ -299,8 +302,20 @@ public class PlayerMovement : MonoBehaviour
         {
             if (hit.transform.tag == "NPC")
             {
-                hit.transform.GetComponent<QuestGiver>()?.OnInteract();
+                
                 hit.transform.GetComponent<QuestTarget>()?.OnInteract();
+
+                if (hit.transform.GetComponent<QuestGiver>())
+                {
+                    hit.transform.GetComponent<QuestGiver>()?.OnInteract();
+
+                    AimAt(hit.transform);
+
+                    playerInteraction.enabled = true;
+                    playerInteraction.SetNPC(hit.transform.gameObject);
+
+                    this.enabled = false;
+                }
             }
         }
     }
@@ -376,19 +391,36 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnAimLockStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        isAimLocked = !isAimLocked;
+        AimAt(null);
         playerAnimator.SetBool("IsAiming", isAimLocked);
+    }
+
+    public void AimAt(Transform target)
+    {
+        isAimLocked = !isAimLocked;
+
         if (isAimLocked)
         {
+
             aimLockCamera.Priority = 20;
-            speedModifier = targetingSpeedModifier;
+
+            if (target == null)
+            {
+                speedModifier = targetingSpeedModifier;
+            }
+            else
+            {
+                aimLockCamera.m_LookAt = target;
+            }
         }
         else
         {
             aimLockCamera.Priority = -10;
+            aimLockCamera.m_LookAt = null;
             speedModifier = runSpeedModifier;
         }
     }
+
     private void OnRollStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         if (isRolling)
