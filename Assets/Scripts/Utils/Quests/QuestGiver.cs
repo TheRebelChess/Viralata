@@ -32,9 +32,10 @@ public class QuestGiver : MonoBehaviour
 
     private void Start()
     {
-        
-
-        //allQuests[0].quest.InitializeQuest();
+        for (int i = 0; i < allQuests.Count; i++)
+        {
+            allQuests[i].quest.InitializeQuest();
+        }
     }
 
     public void OnInteract()
@@ -109,7 +110,7 @@ public class QuestGiver : MonoBehaviour
 
     public void NextOption()
     {
-        questOptions[selectQuestIndex].color = Color.black;
+        questOptions[selectQuestIndex].color = Color.white;
 
         selectQuestIndex = (selectQuestIndex + 1) % questOptions.Count;
 
@@ -118,7 +119,7 @@ public class QuestGiver : MonoBehaviour
 
     public void PreviousOption()
     {
-        questOptions[selectQuestIndex].color = Color.black;
+        questOptions[selectQuestIndex].color = Color.white;
 
         selectQuestIndex = Math.Abs((selectQuestIndex - 1)) % questOptions.Count;
 
@@ -136,9 +137,21 @@ public class QuestGiver : MonoBehaviour
             questSelectionBox.SetActive(false);
     }
 
+    public void CleanOptions()
+    {
+        for (int i = questOptions.Count - 1; i >= 0; i--)
+        {
+            GameObject questOption = questOptions[i].gameObject;
+            questOptions.RemoveAt(i);
+
+            Destroy(questOption);
+        }
+    }
+
     public void ExitInteraction()
     {
         DeactivateDialogUI();
+        CleanOptions();
         DeactivateQuestSelectionUI();
     }
 

@@ -898,11 +898,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &334586768 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 873637480994464271, guid: 1c32cd0ec531eaa40845bbf5bbc44766, type: 3}
-  m_PrefabInstance: {fileID: 7343249259710158382}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &417119857 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3452393211865987372, guid: 090ee69709bb28e40ba3f93e96d5fe96, type: 3}
@@ -1729,7 +1724,6 @@ GameObject:
   - component: {fileID: 833265465}
   - component: {fileID: 833265464}
   - component: {fileID: 833265463}
-  - component: {fileID: 833265468}
   m_Layer: 9
   m_Name: Talk Quest Giver
   m_TagString: NPC
@@ -1842,22 +1836,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &833265468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 833265462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bdf18281f535284998de0ab719038aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogCanvas: {fileID: 1086944545}
-  dialogText: {fileID: 1189339362}
-  questSelectionBox: {fileID: 1962406678}
-  questSelectionText: {fileID: 334586768}
 --- !u!1 &872315794
 GameObject:
   m_ObjectHideFlags: 0
@@ -4115,8 +4093,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1992231769}
-  m_LocalRotation: {x: 0.10606978, y: -0.060251225, z: 0.0064390586, w: 0.99251074}
-  m_LocalPosition: {x: 6.521858, y: 2.979645, z: -21.374607}
+  m_LocalRotation: {x: 0.10606979, y: -0.060251165, z: 0.006439052, w: 0.99251074}
+  m_LocalPosition: {x: 6.521857, y: 2.9796453, z: -21.374609}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 169461037}
