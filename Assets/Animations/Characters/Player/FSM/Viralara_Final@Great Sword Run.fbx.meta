@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: bc9f6ccd06c6bb74ab1b0fde9ec7d97f
+guid: bdc50a9cdc47c654c9dbd46716baf041
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Great Sword Idle
+    second: Great Sword Run
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,11 +35,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Great Sword Idle
+      name: Great Sword Run
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 111
+      lastFrame: 18
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
