@@ -9,12 +9,15 @@ public class GameManager : MonoBehaviour
     public GameObject hudCanvas;
     public GameObject gameOverCanvas;
     public CinemachineInputProvider cinemachineInputProvider;
+    public Inventory inventoryScript;
 
     public void Start()
     {
         Time.timeScale = 1f;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        inventoryScript.Initialize();
     }
 
     public void GameOver()

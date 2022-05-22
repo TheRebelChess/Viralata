@@ -45,14 +45,18 @@ public class PlayerMovement : MonoBehaviour
     private bool isPreparingAttack = false;
     private bool isAttacking = false;
     private bool isBlocking = true;
+    private bool canAttack = true;
 
     public CinemachineVirtualCamera aimLockCamera;
+    public CinemachineVirtualCamera playerCamera;
+
     public Transform attackOrigin;
     public LayerMask hitableMask;
 
     public QuestSystem questSystem;
     public GameManager gameManager;
-
+    public Inventory inventoryScript;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -276,12 +280,33 @@ public class PlayerMovement : MonoBehaviour
         input.playerActions.AimLock.started += OnAimLockStarted;
         input.playerActions.Jump.started += OnRollStarted;
         input.playerActions.Interact.started += OnInteractStarted;
+        input.playerActions.Inventory.started += OnInventoryStarted;
 
         input.playerActions.Attack1.started += OnAttackStarted;
         input.playerActions.Attack1.canceled += OnAttackReleased;
 
         input.playerActions.Block.started += OnBlockPressed;
         input.playerActions.Block.canceled += OnBlockReleased;
+    }
+
+    private void OnInventoryStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        if (inventoryScript.gameObject.activeSelf)
+        {
+            inventoryScript.gameObject.SetActive(false);
+            playerCamera.GetComponent<CinemachineInputProvider>().enabled = true;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            canAttack = true;
+        }
+        else
+        {
+            inventoryScript.gameObject.SetActive(true);
+            playerCamera.GetComponent<CinemachineInputProvider>().enabled = false;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
+            canAttack = false;
+        }
     }
 
     private void OnInteractStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -292,6 +317,8 @@ public class PlayerMovement : MonoBehaviour
             GameObject gameObject = itemsInRage[itemsInRage.Count - 1];
             itemsInRage.RemoveAt(itemsInRage.Count - 1);
             questSystem.OnPlayerCollect(gameObject);
+            inventoryScript.AddItem(gameObject.GetComponent<ItemController>().item);
+
             Destroy(gameObject);
             return;
         }
@@ -342,7 +369,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnAttackStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (isAttacking || isRolling)
+        if (isAttacking || isRolling || !canAttack)
             return;
 
         Debug.Log("Entrou");
@@ -381,6 +408,7 @@ public class PlayerMovement : MonoBehaviour
         input.playerActions.AimLock.started -= OnAimLockStarted;
         input.playerActions.Jump.started -= OnRollStarted;
         input.playerActions.Interact.started -= OnInteractStarted;
+        input.playerActions.Inventory.started -= OnInventoryStarted;
 
         input.playerActions.Attack1.started -= OnAttackStarted;
         input.playerActions.Attack1.canceled -= OnAttackReleased;
