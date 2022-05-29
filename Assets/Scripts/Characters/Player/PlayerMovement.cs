@@ -85,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isRolling || isAttacking )
+        if (isRolling)
         {
             return;
         }
@@ -101,8 +101,7 @@ public class PlayerMovement : MonoBehaviour
                 isAttacking = true;
                 attackDamage = 5f;
                 ResetHorizVel();
-                playerAnimator.SetTrigger("Attack");
-                playerAnimator.SetFloat("AttackForce", 1);
+                playerAnimator.SetTrigger("heavyAttack");
                 StartCoroutine(AttackTimer(1f));
 
                 return;
@@ -114,15 +113,14 @@ public class PlayerMovement : MonoBehaviour
 
         currentSpeed = Mathf.Min(movementInput.magnitude, speedModifier);
 
-        if (isAimLocked)
+        if (currentSpeed != 0)
         {
-            playerAnimator.SetFloat("Velocity X", movementInput.x);
-            playerAnimator.SetFloat("Velocity Z", movementInput.y);
+            playerAnimator.SetBool("move", true);
         }
         else
         {
-            playerAnimator.SetFloat("Speed", currentSpeed);
-        } 
+            playerAnimator.SetBool("move", false);
+        }
         
     }
 
@@ -131,11 +129,6 @@ public class PlayerMovement : MonoBehaviour
         if (isRolling)
         {
             Roll();
-            return;
-        }
-
-        if (isAttacking)
-        {
             return;
         }
 
@@ -277,7 +270,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void AddInputActionsCallbacks()
     {
-        input.playerActions.AimLock.started += OnAimLockStarted;
+        //input.playerActions.AimLock.started += OnAimLockStarted;
         input.playerActions.Jump.started += OnRollStarted;
         input.playerActions.Interact.started += OnInteractStarted;
         input.playerActions.Inventory.started += OnInventoryStarted;
@@ -353,7 +346,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         isBlocking = true;
-        playerAnimator.SetBool("isBlocking", true);
+        playerAnimator.SetBool("block", true);
     }
 
     private void OnBlockReleased(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -362,7 +355,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         isBlocking = false;
-        playerAnimator.SetBool("isBlocking", false);
+        playerAnimator.SetBool("block", false);
         Debug.Log(isBlocking);
     }
 
@@ -383,18 +376,17 @@ public class PlayerMovement : MonoBehaviour
 
         isPreparingAttack = false;
         isAttacking = true;
-        ResetHorizVel();
-        playerAnimator.SetTrigger("Attack");
+        //ResetHorizVel();
 
         if (attackTimer >= heavyAttackDelay)
         {
-            playerAnimator.SetFloat("AttackForce", 1);
+            playerAnimator.SetTrigger("heavyAttack");
             attackDamage = 2f;
             StartCoroutine(AttackTimer(1f));
         }
         else
         {
-            playerAnimator.SetFloat("AttackForce", 0);
+            playerAnimator.SetTrigger("attack");
             attackDamage = 1f;
             StartCoroutine(AttackTimer(.5f));
         }
@@ -405,7 +397,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void RemoveInputActionsCallbacks()
     {
-        input.playerActions.AimLock.started -= OnAimLockStarted;
+        //input.playerActions.AimLock.started -= OnAimLockStarted;
         input.playerActions.Jump.started -= OnRollStarted;
         input.playerActions.Interact.started -= OnInteractStarted;
         input.playerActions.Inventory.started -= OnInventoryStarted;
@@ -417,11 +409,11 @@ public class PlayerMovement : MonoBehaviour
         input.playerActions.Block.canceled -= OnBlockReleased;
     }
 
-    private void OnAimLockStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
-    {
-        AimAt(null);
-        playerAnimator.SetBool("IsAiming", isAimLocked);
-    }
+    //private void OnAimLockStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    //{
+    //    AimAt(null);
+    //    playerAnimator.SetBool("IsAiming", isAimLocked);
+    //}
 
     public void AimAt(Transform target)
     {
@@ -479,7 +471,7 @@ public class PlayerMovement : MonoBehaviour
 
         rb.MoveRotation(targetRotation);
 
-        playerAnimator.SetTrigger("Roll");
+        playerAnimator.SetTrigger("roll");
 
     }
 

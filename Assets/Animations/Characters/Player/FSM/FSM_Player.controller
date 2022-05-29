@@ -490,7 +490,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: move
+    m_ConditionEvent: block
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4528403310094168255}
@@ -607,7 +607,7 @@ AnimatorStateMachine:
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: -160, y: 600, z: 0}
   m_EntryPosition: {x: 90, y: 100, z: 0}
-  m_ExitPosition: {x: 140, y: 70, z: 0}
+  m_ExitPosition: {x: 550, y: 100, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 4528403310094168255}
 --- !u!1101 &-788768284424408230
@@ -710,7 +710,7 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: block
-    m_Type: 9
+    m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -914,8 +914,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: move
+  - m_ConditionMode: 2
+    m_ConditionEvent: block
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 9127792568393864848}
