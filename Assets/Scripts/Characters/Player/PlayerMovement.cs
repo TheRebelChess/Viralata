@@ -47,12 +47,12 @@ public class PlayerMovement : MonoBehaviour
     private bool isBlocking = true;
     private bool canAttack = true;
 
-    private int playerLevel = 1;
-    private int currentXp = 0;
+    public int playerLevel = 1;
+    public int currentXp = 0;
     [SerializeField]
     private int[] xpRequiredByLv;
 
-    public int strengh = 1;
+    public int strength = 1;
 
     public CinemachineVirtualCamera aimLockCamera;
     public CinemachineVirtualCamera playerCamera;
@@ -89,6 +89,16 @@ public class PlayerMovement : MonoBehaviour
         RemoveInputActionsCallbacks();
     }
 
+    private void OnDisable()
+    {
+        RemoveInputActionsCallbacks();
+    }
+
+    private void OnEnable()
+    {
+        AddInputActionsCallbacks();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -108,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
                 isAttacking = true;
                 attackDamage = 5f;
                 ResetHorizVel();
-                playerAnimator.SetTrigger("heavyAttack");
+                //playerAnimator.SetTrigger("heavyAttack");
                 StartCoroutine(AttackTimer(1f));
 
                 return;
@@ -267,7 +277,7 @@ public class PlayerMovement : MonoBehaviour
             if (hit.transform.tag == "Enemy")
             {
                 bool hasKilled = false;
-                hasKilled = hit.transform.GetComponent<Enemy>().TakeHit(attackDamage);
+                hasKilled = hit.transform.GetComponent<Enemy>().TakeHit(attackDamage * strength);
                 if (hasKilled)
                 {
                     questSystem.OnPlayerKill(hit.transform.gameObject);
@@ -291,6 +301,7 @@ public class PlayerMovement : MonoBehaviour
     private void LevelUp()
     {
         playerLevel++;
+        strength++;
     }
 
     private void AddInputActionsCallbacks()
@@ -343,8 +354,10 @@ public class PlayerMovement : MonoBehaviour
 
         // Se não, tenta conversar com algum NPC
         RaycastHit hit;
+        Debug.Log("entrou");
         if (Physics.Raycast(attackOrigin.position, transform.forward, out hit, 2f, hitableMask))
         {
+            Debug.Log("acertou");
             if (hit.transform.tag == "NPC")
             {
                 
@@ -371,7 +384,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         isBlocking = true;
-        playerAnimator.SetBool("block", true);
+        //playerAnimator.SetBool("block", true);
     }
 
     private void OnBlockReleased(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -380,7 +393,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         isBlocking = false;
-        playerAnimator.SetBool("block", false);
+        //playerAnimator.SetBool("block", false);
         Debug.Log(isBlocking);
     }
 
@@ -405,13 +418,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (attackTimer >= heavyAttackDelay)
         {
-            playerAnimator.SetTrigger("heavyAttack");
+            //playerAnimator.SetTrigger("heavyAttack");
             attackDamage = 2f;
             StartCoroutine(AttackTimer(1f));
         }
         else
         {
-            playerAnimator.SetTrigger("attack");
+            //playerAnimator.SetTrigger("attack");
             attackDamage = 1f;
             StartCoroutine(AttackTimer(.5f));
         }
@@ -496,7 +509,7 @@ public class PlayerMovement : MonoBehaviour
 
         rb.MoveRotation(targetRotation);
 
-        playerAnimator.SetTrigger("roll");
+        //playerAnimator.SetTrigger("roll");
 
     }
 
@@ -505,9 +518,9 @@ public class PlayerMovement : MonoBehaviour
         previousSpeed = speedModifier;
         speedModifier = rollSpeedModifier;
         currentSpeed = rollSpeedModifier;
-        playerAnimator.speed = 1.3f;
+        //playerAnimator.speed = 1.3f;
         yield return new WaitForSeconds(.9f);
-        playerAnimator.speed = 1f;
+        //playerAnimator.speed = 1f;
         isRolling = false;
         speedModifier = previousSpeed;
     }

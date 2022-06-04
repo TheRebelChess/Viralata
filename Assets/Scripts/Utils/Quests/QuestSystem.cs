@@ -149,6 +149,9 @@ public class QuestSystem : MonoBehaviour
 
     private void CompleteQuest(Quest quest)
     {
+        var player = FindObjectOfType<PlayerMovement>();
+        player.GainXP(1);
+
         activeQuests.Remove(quest);
         completedQuests.Add(quest);
 
