@@ -95,6 +95,8 @@ public class QuestSystem : MonoBehaviour
             if (activeQuests[i].CheckQuestCompletion())
             {
                 CompleteQuest(activeQuests[i]);
+                var player = FindObjectOfType<PlayerMovement>();
+                player.GainXP((int)activeQuests[i].xpGained);
             }
         }
     }

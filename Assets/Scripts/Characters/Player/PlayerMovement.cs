@@ -47,6 +47,13 @@ public class PlayerMovement : MonoBehaviour
     private bool isBlocking = true;
     private bool canAttack = true;
 
+    private int playerLevel = 1;
+    private int currentXp = 0;
+    [SerializeField]
+    private int[] xpRequiredByLv;
+
+    public int strengh = 1;
+
     public CinemachineVirtualCamera aimLockCamera;
     public CinemachineVirtualCamera playerCamera;
 
@@ -262,11 +269,29 @@ public class PlayerMovement : MonoBehaviour
                 bool hasKilled = false;
                 hasKilled = hit.transform.GetComponent<Enemy>().TakeHit(attackDamage);
                 if (hasKilled)
+                {
                     questSystem.OnPlayerKill(hit.transform.gameObject);
+                    GainXP(1);
+                }
+
             }
         }
     }
 
+    public void GainXP(int xp)
+    {
+        currentXp += xp;
+        if (currentXp >= xpRequiredByLv[playerLevel - 1])
+        {
+            LevelUp();
+            currentXp = 0;
+        }
+    }
+
+    private void LevelUp()
+    {
+        playerLevel++;
+    }
 
     private void AddInputActionsCallbacks()
     {
