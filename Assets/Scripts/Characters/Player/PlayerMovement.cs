@@ -118,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
                 isAttacking = true;
                 attackDamage = 5f;
                 ResetHorizVel();
-                //playerAnimator.SetTrigger("heavyAttack");
+                playerAnimator.SetTrigger("heavyAttack");
                 StartCoroutine(AttackTimer(1f));
 
                 return;
@@ -384,7 +384,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         isBlocking = true;
-        //playerAnimator.SetBool("block", true);
+        playerAnimator.SetBool("block", true);
     }
 
     private void OnBlockReleased(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -393,7 +393,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         isBlocking = false;
-        //playerAnimator.SetBool("block", false);
+        playerAnimator.SetBool("block", false);
         Debug.Log(isBlocking);
     }
 
@@ -418,13 +418,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (attackTimer >= heavyAttackDelay)
         {
-            //playerAnimator.SetTrigger("heavyAttack");
+            playerAnimator.SetTrigger("heavyAttack");
             attackDamage = 2f;
             StartCoroutine(AttackTimer(1f));
         }
         else
         {
-            //playerAnimator.SetTrigger("attack");
+            playerAnimator.SetTrigger("attack");
             attackDamage = 1f;
             StartCoroutine(AttackTimer(.5f));
         }
@@ -509,7 +509,7 @@ public class PlayerMovement : MonoBehaviour
 
         rb.MoveRotation(targetRotation);
 
-        //playerAnimator.SetTrigger("roll");
+        playerAnimator.SetTrigger("roll");
 
     }
 
@@ -518,9 +518,9 @@ public class PlayerMovement : MonoBehaviour
         previousSpeed = speedModifier;
         speedModifier = rollSpeedModifier;
         currentSpeed = rollSpeedModifier;
-        //playerAnimator.speed = 1.3f;
+        playerAnimator.speed = 1.3f;
         yield return new WaitForSeconds(.9f);
-        //playerAnimator.speed = 1f;
+        playerAnimator.speed = 1f;
         isRolling = false;
         speedModifier = previousSpeed;
     }

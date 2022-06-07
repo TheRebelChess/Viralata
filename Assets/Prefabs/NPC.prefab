@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6501265855043509610}
   - component: {fileID: 6501265855043509611}
   - component: {fileID: 6501265855043509612}
+  - component: {fileID: 1549808815}
   m_Layer: 9
   m_Name: NPC
   m_TagString: NPC
@@ -60,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48412ff650a4e574c9f59cce7ece7395, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -96,3 +97,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1549808815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6501265855043509613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cbdb35812898f04ebb4d34a5a3ae5a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quests:
+  - questRelated: {fileID: 11400000, guid: 3ec6fb2423ba4aa41871a4a6daa688a3, type: 2}
+    dialog: "Parab\xE9ns, voc\xEA completou a quest."
+  questSystem: {fileID: 0}

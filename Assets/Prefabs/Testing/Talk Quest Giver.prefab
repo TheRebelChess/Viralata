@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2964451631236905317
+--- !u!1 &5845598312833985758
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2964451631236905321}
-  - component: {fileID: 2964451631236905320}
-  - component: {fileID: 2964451631236905323}
-  - component: {fileID: 2964451631236905322}
-  - component: {fileID: 266726002}
-  m_Layer: 0
-  m_Name: Item
-  m_TagString: Item
+  - component: {fileID: 5845598312833985747}
+  - component: {fileID: 5845598312833985746}
+  - component: {fileID: 5845598312833985745}
+  - component: {fileID: 5845598312833985744}
+  - component: {fileID: 5845598312833985759}
+  m_Layer: 9
+  m_Name: Talk Quest Giver
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2964451631236905321
+--- !u!4 &5845598312833985747
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2964451631236905317}
+  m_GameObject: {fileID: 5845598312833985758}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.97, y: 0.8, z: 4.995}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 2.23, y: 1.54, z: -6.62}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2964451631236905320
+--- !u!33 &5845598312833985746
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2964451631236905317}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &2964451631236905323
+  m_GameObject: {fileID: 5845598312833985758}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &5845598312833985745
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2964451631236905317}
+  m_GameObject: {fileID: 5845598312833985758}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1af9d702079434f40b850468cb9e2eac, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,29 +83,45 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &2964451631236905322
-SphereCollider:
+--- !u!136 &5845598312833985744
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2964451631236905317}
+  m_GameObject: {fileID: 5845598312833985758}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
   m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &266726002
+--- !u!114 &5845598312833985759
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2964451631236905317}
+  m_GameObject: {fileID: 5845598312833985758}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebd09cc951394274aadb0da9d65e1134, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d96470729fe93d44996247bdf82a8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 937616f9fa572d643b775241b3d1b7f1, type: 2}
+  allQuests:
+  - minLevelRequired: 0
+    previousQuestRequired: {fileID: 0}
+    quest: {fileID: 11400000, guid: 3ec6fb2423ba4aa41871a4a6daa688a3, type: 2}
+    Dialog: Converse com a capsula azul para completar essa quest. Para interagir
+      com um NPC se aproxime e aperte E.
+  - minLevelRequired: 0
+    previousQuestRequired: {fileID: 0}
+    quest: {fileID: 11400000, guid: ac6fbaddc06f09d4fb0ac2d91022d502, type: 2}
+    Dialog: "Mate o Inimigo para completar essa quest. Para atacar use o bot\xE3o
+      esquerdo do mouse."
+  questSystem: {fileID: 0}
+  dialogCanvas: {fileID: 0}
+  dialogText: {fileID: 0}
+  questSelectionBox: {fileID: 0}
+  questSelectionText: {fileID: 6783732469164157127, guid: 12a9b6eafa0dfb84dbc5f3dcfe0148af, type: 3}
