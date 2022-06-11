@@ -22,7 +22,9 @@ public class Inventory : MonoBehaviour
 
     //public Database itemsDatabase;
     public int numSlots = 16;
-    
+
+    public PlayerMovement player;
+
     // Start is called before the first frame update
     void Start()
     {

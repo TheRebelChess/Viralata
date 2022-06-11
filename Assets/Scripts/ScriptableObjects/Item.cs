@@ -16,4 +16,17 @@ public class Item : ScriptableObject
     public ItemType Type;
     public Sprite image;
     public GameObject model;
+
+    public void UseItem(PlayerMovement player)
+    {
+        switch (Name)
+        {
+            case "Apple":
+                player.GetComponent<PlayerMovement>().IncreaseHealth(3);
+                break;
+
+            default:
+                break;
+        }
+    }
 }
