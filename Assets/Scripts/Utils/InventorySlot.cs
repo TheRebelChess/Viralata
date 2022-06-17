@@ -5,10 +5,12 @@ using UnityEngine.UI;
 
 public class InventorySlot : MonoBehaviour
 {
-    public ScriptableObject item;
+    public Item item;
     
     private GameObject itemIcon;
     private Inventory inventoryScript;
+
+    private PlayerMovement player;
 
     public void UseItem()
     {
@@ -16,6 +18,8 @@ public class InventorySlot : MonoBehaviour
             return;
 
         Debug.Log("Item " + item.name + " consumed");
+        player = GetComponentInParent<Inventory>().player;
+        item.UseItem(player);
         itemIcon = transform.GetChild(0).gameObject;
         inventoryScript = GetComponentInParent<Inventory>();
 

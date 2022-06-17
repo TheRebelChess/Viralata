@@ -96,6 +96,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -178,7 +179,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f12cf666364e0d7e0800000000000000
-      internalID: -1742641940220886497
+      internalID: -4765173833414381440
       vertices: []
       indices: 
       edges: []
@@ -697,6 +698,32 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      playerSlotsItem: -7599496398051361356
+      skill3: 8729072133955752925
+      Export_23: 1367129294559801261
+      emptylifeBar: -5280777853086121427
+      itemDescription: -8568955575427380967
+      itemBoxSelected: 7137015269091132590
+      playerIcon: 7391489554033366054
+      staminaBar: 3170500844531466713
+      itemslot2: -8705591216554426165
+      menuIcon: -4765173833414381440
+      playerCoin: -471978321030411423
+      playerOp: -5006453520078483777
+      itemStatus: 5211711928372202733
+      missionDescription: 9162672229537819288
+      won'tuse: -5270533193185268695
+      missionLog: 5937354401751966955
+      chatBox: -8767524116595853010
+      lifeBar: -7871668601220253517
+      Bag: 8084845649433181611
+      emptystaminaBar: 722076238756049665
+      skill2: -6102063198919296393
+      skill1: 7289320772064134711
+      itemImage: 4328561074524716912
+      itemslot1: -6422090765125870964
+      itemBox: -4672811806373581259
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

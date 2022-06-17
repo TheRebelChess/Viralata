@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     private float attackDamage = 0f;
 
     private PlayerHealth playerHealthScript;
+    private float maxHealth = 10f;
     private float health = 10f;
 
 
@@ -546,6 +547,16 @@ public class PlayerMovement : MonoBehaviour
             gameManager.GameOver();
         }
 
+    }
+
+    public void IncreaseHealth(int amount)
+    {
+        health += amount;
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
+        playerHealthScript.UpdateHealth(health);
     }
 
     private void OnTriggerEnter(Collider other)
