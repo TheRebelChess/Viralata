@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5305399557204151076}
-  - component: {fileID: 5305399557204151083}
   - component: {fileID: 7232279611266442922}
   - component: {fileID: 5305399557204151082}
   - component: {fileID: 5305399557204151077}
   - component: {fileID: 5280642019487182101}
+  - component: {fileID: 1903603398286402195}
   m_Layer: 8
   m_Name: NewEnemy
   m_TagString: Enemy
@@ -39,22 +39,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &5305399557204151083
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5305399557204151080}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 112
-  m_CollisionDetection: 1
 --- !u!114 &7232279611266442922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,7 +52,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 10
-  rayCastOrigin: {fileID: 2671962945327686267}
+  raycastOrigin: {fileID: 2671962945327686267}
+  lineOfSight: {fileID: 3643185062219020911}
+  swordTrigger: {fileID: 5305399556467007504}
+  timeToStopFollowing: 3
+  attackCooldown: 3
+  damage: 3
+  audioSource: {fileID: 1903603398286402195}
+  attackSFX: {fileID: 8300000, guid: f6f03d4e9917c874cb3747bca4bb441f, type: 3}
+  deathSFX: {fileID: 8300000, guid: 08dcb8fb670ffda4c8cee65a789c6210, type: 3}
+  tookHitSFX: {fileID: 8300000, guid: c42401a4fa23aa840bf1003a73083d88, type: 3}
 --- !u!136 &5305399557204151082
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -120,6 +113,102 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!82 &1903603398286402195
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5305399557204151080}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 6753622391159482619, guid: d62355a6f2925bb49a4ec7a326814e09, type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &5305399558091734748
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,6 +465,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SwordPH
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6c89d7fdf8064fd47b5d3eb043e4b88b, type: 3}
+      propertyPath: m_TagString
+      value: Sword
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c89d7fdf8064fd47b5d3eb043e4b88b, type: 3}
 --- !u!1 &4999550943836786219 stripped
@@ -391,11 +484,23 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4999550943836786219}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.0030571476, y: 0.00091892487, z: 0.011235258}
   m_Center: {x: -0.00018347049, y: 0.0002872034, z: 0.005511169}
+--- !u!114 &373760997736211286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4999550943836786219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d84523451ca59c45bc3ca40b6191874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5305399558054749973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -453,21 +558,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 546c8a0aad5137245bfc3a41155a2b72, type: 3}
---- !u!1 &4999550943190260292 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 546c8a0aad5137245bfc3a41155a2b72, type: 3}
-  m_PrefabInstance: {fileID: 5305399558054749973}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &5305399556427836386
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4999550943190260292}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.0057580625, y: 0.0010285585, z: 0.00870987}
-  m_Center: {x: 0.000009961886, y: 0.00055538095, z: -0.0011109791}

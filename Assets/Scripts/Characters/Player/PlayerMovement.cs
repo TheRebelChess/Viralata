@@ -36,10 +36,9 @@ public class PlayerMovement : MonoBehaviour
     private float attackTimer = 0f;
     private float heavyAttackDelay = .5f;
     private float maxAttackDelay = 1f;
-    private float attackDamage = 0f;
+    private int attackDamage = 0;
 
     private PlayerHealth playerHealthScript;
-    private float maxHealth = 10f;
     private float health = 10f;
 
 
@@ -47,8 +46,9 @@ public class PlayerMovement : MonoBehaviour
     private bool isRolling = false;
     private bool isPreparingAttack = false;
     private bool isAttacking = false;
-    private bool isBlocking = true;
+    private bool isBlocking = false;
     private bool canAttack = true;
+    private bool isInvincible = false;
 
     public int playerLevel = 1;
     public int currentXp = 0;
@@ -56,7 +56,10 @@ public class PlayerMovement : MonoBehaviour
     private int[] xpRequiredByLv;
 
     public int strength = 1;
+    public float maxHealth = 10f;
 
+    public float invincibilityTime = 1f;
+    
     public CinemachineVirtualCamera aimLockCamera;
     public CinemachineVirtualCamera playerCamera;
 
@@ -66,7 +69,13 @@ public class PlayerMovement : MonoBehaviour
     public QuestSystem questSystem;
     public GameManager gameManager;
     public Inventory inventoryScript;
-    
+
+    public AudioSource audioSource;
+    public AudioClip lightAttackSFX;
+    public AudioClip heavyAttackSFX;
+    public AudioClip blockSFX;
+    public AudioClip deathSFX;
+
 
     // Start is called before the first frame update
     void Start()
@@ -108,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isRolling || isAttacking)
+        if (isRolling || isAttacking || isBlocking)
         {
             return;
         }
@@ -122,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
                 attackTimer = 0;
                 isPreparingAttack = false;
                 isAttacking = true;
-                attackDamage = 5f;
+                attackDamage = 5;
                 ResetHorizVel();
                 playerAnimator.SetTrigger("heavyAttack");
                 StartCoroutine(AttackTimer(1f));
@@ -149,6 +158,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isAttacking || isBlocking)
+        {
+            ResetHorizVel();
+            return;
+        }
+
         if (isRolling)
         {
             Roll();
@@ -275,7 +290,7 @@ public class PlayerMovement : MonoBehaviour
     public void EnemyHit(GameObject enemy)
     {
         swordTrigger.enabled = false;
-        bool hasKilled = enemy.GetComponent<Enemy>().TakeHit(attackDamage * strength);
+        bool hasKilled = enemy.GetComponent<EnemyMovement>().TakeHit(attackDamage * strength);
 
         if (hasKilled)
         {
@@ -407,6 +422,7 @@ public class PlayerMovement : MonoBehaviour
 
         isBlocking = true;
         playerAnimator.SetBool("block", true);
+        playerAnimator.SetBool("move", false);
     }
 
     private void OnBlockReleased(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -441,13 +457,13 @@ public class PlayerMovement : MonoBehaviour
         if (attackTimer >= heavyAttackDelay)
         {
             playerAnimator.SetTrigger("heavyAttack");
-            attackDamage = 2f;
+            attackDamage = 5;
             StartCoroutine(AttackTimer(1f));
         }
         else
         {
             playerAnimator.SetTrigger("attack");
-            attackDamage = 1f;
+            attackDamage = 1;
             StartCoroutine(AttackTimer(.5f));
         }
 
@@ -551,15 +567,30 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(t);
         swordTrigger.enabled = true;
+        if (attackDamage == 5f)
+        {
+
+            audioSource.PlayOneShot(heavyAttackSFX);
+        }
+        else
+        {
+            audioSource.PlayOneShot(lightAttackSFX);
+        }
         Attack();
-        yield return new WaitForSeconds(t);
+        yield return new WaitForSeconds(.5f);
         isAttacking = false;
         swordTrigger.enabled = false;
     }
 
     public void TakeHit(int damage)
     {
-        health -= (int) damage;
+        if (isInvincible)
+        {
+            return;
+        }
+        StartCoroutine(InvincibilityTimer(invincibilityTime));
+
+        health -= damage;
 
         if (health < 0)
             health = 0;
@@ -568,9 +599,21 @@ public class PlayerMovement : MonoBehaviour
 
         if (health == 0)
         {
-            gameManager.GameOver();
+            audioSource.PlayOneShot(deathSFX);
+            playerAnimator.SetTrigger("death");
+            GetComponent<PlayerDeath>().enabled = true;
+            GetComponent<CapsuleCollider>().enabled = false;
+            rb.useGravity = false;
+            this.enabled = false;
         }
 
+    }
+
+    IEnumerator InvincibilityTimer(float t)
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(t);
+        isInvincible = false;
     }
 
     public void IncreaseHealth(int amount)
