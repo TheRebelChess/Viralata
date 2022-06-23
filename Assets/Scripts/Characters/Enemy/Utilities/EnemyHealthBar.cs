@@ -10,14 +10,14 @@ public class EnemyHealthBar : MonoBehaviour
     public Canvas canvas;
 
     private GameObject currentSlider;
-    private Enemy enemyScript;
+    private EnemyMovement enemyScript;
     private Slider slider;
 
     // Start is called before the first frame update
     void Start()
     {
         SpawnSlider();
-        enemyScript = GetComponent<Enemy>();
+        enemyScript = GetComponent<EnemyMovement>();
         slider.maxValue = enemyScript.health;
     }
 

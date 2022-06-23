@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
 
     private List<GameObject> itemsInRage;
 
+    private BoxCollider swordTrigger;
+
     private float currentTargetRotation;
     private float timeToReachTargetRotation;
     private float dampedTargetRotationCurrentVelocity;
@@ -82,6 +84,9 @@ public class PlayerMovement : MonoBehaviour
         timeToReachTargetRotation = 0.14f;
         speedModifier = runSpeedModifier;
         mainCameraTransform = Camera.main.transform;
+
+        swordTrigger = GetComponentInChildren<BoxCollider>();
+        swordTrigger.enabled = false;
         
     }
 
@@ -97,13 +102,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        AddInputActionsCallbacks();
+       // AddInputActionsCallbacks();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isRolling)
+        if (isRolling || isAttacking)
         {
             return;
         }
@@ -267,8 +272,24 @@ public class PlayerMovement : MonoBehaviour
         return directionAngle;
     }
 
+    public void EnemyHit(GameObject enemy)
+    {
+        swordTrigger.enabled = false;
+        bool hasKilled = enemy.GetComponent<Enemy>().TakeHit(attackDamage * strength);
+
+        if (hasKilled)
+        {
+            questSystem.OnPlayerKill(enemy);
+            GainXP(1);
+        }
+    }
 
     private void Attack()
+    {
+
+    }
+
+    private void AttackRayCast()
     {
         RaycastHit hit;
         Debug.DrawRay(attackOrigin.position, transform.forward * 2f, Color.red);
@@ -529,8 +550,11 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator AttackTimer(float t)
     {
         yield return new WaitForSeconds(t);
+        swordTrigger.enabled = true;
         Attack();
+        yield return new WaitForSeconds(t);
         isAttacking = false;
+        swordTrigger.enabled = false;
     }
 
     public void TakeHit(int damage)
