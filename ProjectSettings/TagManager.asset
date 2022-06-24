@@ -8,6 +8,7 @@ TagManager:
   - Place
   - NPC
   - Item
+  - Sword
   layers:
   - Default
   - TransparentFX

@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
 
     private List<GameObject> itemsInRage;
 
+    private BoxCollider swordTrigger;
+
     private float currentTargetRotation;
     private float timeToReachTargetRotation;
     private float dampedTargetRotationCurrentVelocity;
@@ -34,10 +36,9 @@ public class PlayerMovement : MonoBehaviour
     private float attackTimer = 0f;
     private float heavyAttackDelay = .5f;
     private float maxAttackDelay = 1f;
-    private float attackDamage = 0f;
+    private int attackDamage = 0;
 
     private PlayerHealth playerHealthScript;
-    private float maxHealth = 10f;
     private float health = 10f;
 
 
@@ -45,8 +46,9 @@ public class PlayerMovement : MonoBehaviour
     private bool isRolling = false;
     private bool isPreparingAttack = false;
     private bool isAttacking = false;
-    private bool isBlocking = true;
+    private bool isBlocking = false;
     private bool canAttack = true;
+    private bool isInvincible = false;
 
     public int playerLevel = 1;
     public int currentXp = 0;
@@ -54,7 +56,10 @@ public class PlayerMovement : MonoBehaviour
     private int[] xpRequiredByLv;
 
     public int strength = 1;
+    public float maxHealth = 10f;
 
+    public float invincibilityTime = 1f;
+    
     public CinemachineVirtualCamera aimLockCamera;
     public CinemachineVirtualCamera playerCamera;
 
@@ -64,7 +69,13 @@ public class PlayerMovement : MonoBehaviour
     public QuestSystem questSystem;
     public GameManager gameManager;
     public Inventory inventoryScript;
-    
+
+    public AudioSource audioSource;
+    public AudioClip lightAttackSFX;
+    public AudioClip heavyAttackSFX;
+    public AudioClip blockSFX;
+    public AudioClip deathSFX;
+
 
     // Start is called before the first frame update
     void Start()
@@ -82,6 +93,9 @@ public class PlayerMovement : MonoBehaviour
         timeToReachTargetRotation = 0.14f;
         speedModifier = runSpeedModifier;
         mainCameraTransform = Camera.main.transform;
+
+        swordTrigger = GetComponentInChildren<BoxCollider>();
+        swordTrigger.enabled = false;
         
     }
 
@@ -97,13 +111,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        AddInputActionsCallbacks();
+       // AddInputActionsCallbacks();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isRolling)
+        if (isRolling || isAttacking || isBlocking)
         {
             return;
         }
@@ -117,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
                 attackTimer = 0;
                 isPreparingAttack = false;
                 isAttacking = true;
-                attackDamage = 5f;
+                attackDamage = 5;
                 ResetHorizVel();
                 playerAnimator.SetTrigger("heavyAttack");
                 StartCoroutine(AttackTimer(1f));
@@ -144,6 +158,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isAttacking || isBlocking)
+        {
+            ResetHorizVel();
+            return;
+        }
+
         if (isRolling)
         {
             Roll();
@@ -267,8 +287,24 @@ public class PlayerMovement : MonoBehaviour
         return directionAngle;
     }
 
+    public void EnemyHit(GameObject enemy)
+    {
+        swordTrigger.enabled = false;
+        bool hasKilled = enemy.GetComponent<EnemyMovement>().TakeHit(attackDamage * strength);
+
+        if (hasKilled)
+        {
+            questSystem.OnPlayerKill(enemy);
+            GainXP(1);
+        }
+    }
 
     private void Attack()
+    {
+
+    }
+
+    private void AttackRayCast()
     {
         RaycastHit hit;
         Debug.DrawRay(attackOrigin.position, transform.forward * 2f, Color.red);
@@ -386,6 +422,7 @@ public class PlayerMovement : MonoBehaviour
 
         isBlocking = true;
         playerAnimator.SetBool("block", true);
+        playerAnimator.SetBool("move", false);
     }
 
     private void OnBlockReleased(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -420,13 +457,13 @@ public class PlayerMovement : MonoBehaviour
         if (attackTimer >= heavyAttackDelay)
         {
             playerAnimator.SetTrigger("heavyAttack");
-            attackDamage = 2f;
+            attackDamage = 5;
             StartCoroutine(AttackTimer(1f));
         }
         else
         {
             playerAnimator.SetTrigger("attack");
-            attackDamage = 1f;
+            attackDamage = 1;
             StartCoroutine(AttackTimer(.5f));
         }
 
@@ -529,13 +566,31 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator AttackTimer(float t)
     {
         yield return new WaitForSeconds(t);
+        swordTrigger.enabled = true;
+        if (attackDamage == 5f)
+        {
+
+            audioSource.PlayOneShot(heavyAttackSFX);
+        }
+        else
+        {
+            audioSource.PlayOneShot(lightAttackSFX);
+        }
         Attack();
+        yield return new WaitForSeconds(.5f);
         isAttacking = false;
+        swordTrigger.enabled = false;
     }
 
     public void TakeHit(int damage)
     {
-        health -= (int) damage;
+        if (isInvincible)
+        {
+            return;
+        }
+        StartCoroutine(InvincibilityTimer(invincibilityTime));
+
+        health -= damage;
 
         if (health < 0)
             health = 0;
@@ -544,9 +599,21 @@ public class PlayerMovement : MonoBehaviour
 
         if (health == 0)
         {
-            gameManager.GameOver();
+            audioSource.PlayOneShot(deathSFX);
+            playerAnimator.SetTrigger("death");
+            GetComponent<PlayerDeath>().enabled = true;
+            GetComponent<CapsuleCollider>().enabled = false;
+            rb.useGravity = false;
+            this.enabled = false;
         }
 
+    }
+
+    IEnumerator InvincibilityTimer(float t)
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(t);
+        isInvincible = false;
     }
 
     public void IncreaseHealth(int amount)
