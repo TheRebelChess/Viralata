@@ -2775,27 +2775,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5000387
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.5000386
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.49996132
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.49996138
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -0.009
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -13232,7 +13232,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5edc704943e0445418f1356e92eeea9e, type: 2}
+  - {fileID: 2100000, guid: 98be61be49abed64abcd15879fe6db65, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16590,27 +16590,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5000387
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.5000386
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.49996132
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.49996138
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -0.009
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 864280414028095727, guid: 552415fc026bd1545a03b71c292ac09c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -17760,6 +17760,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stairs (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6235519261955834329, guid: 1380a1eefe1d40a43b2cbc680ca450a2, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 592e329fd71db494db8b910e9cdc032d, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1380a1eefe1d40a43b2cbc680ca450a2, type: 3}
 --- !u!4 &1221067365 stripped
@@ -21596,7 +21600,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5edc704943e0445418f1356e92eeea9e, type: 2}
+  - {fileID: 2100000, guid: 98be61be49abed64abcd15879fe6db65, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23689,6 +23693,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stairs
       objectReference: {fileID: 0}
+    - target: {fileID: 6235519261955834329, guid: 1380a1eefe1d40a43b2cbc680ca450a2, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 592e329fd71db494db8b910e9cdc032d, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1380a1eefe1d40a43b2cbc680ca450a2, type: 3}
 --- !u!4 &1684654362 stripped
