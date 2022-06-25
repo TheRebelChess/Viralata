@@ -43,8 +43,8 @@ public class QuestGiver : MonoBehaviour
         ActivateDialogUI();
         SetDialogText("Hello, pick a quest");
         ActivateQuestSelectionUI();
-        
-        if (allQuests != null)
+
+        if (allQuests != null && allQuests.Count > 0)
         {
             for (int i = 0; i < allQuests.Count; i++)
             {
@@ -110,6 +110,10 @@ public class QuestGiver : MonoBehaviour
 
     public void NextOption()
     {
+        if (questOptions.Count == 0)
+        {
+            return;
+        }
         questOptions[selectQuestIndex].color = Color.white;
 
         selectQuestIndex = (selectQuestIndex + 1) % questOptions.Count;
@@ -119,6 +123,10 @@ public class QuestGiver : MonoBehaviour
 
     public void PreviousOption()
     {
+        if (questOptions.Count == 0)
+        {
+            return;
+        }
         questOptions[selectQuestIndex].color = Color.white;
 
         selectQuestIndex = Math.Abs((selectQuestIndex - 1)) % questOptions.Count;

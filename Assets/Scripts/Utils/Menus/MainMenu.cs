@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    public GameObject creditsScreen;
+    public GameObject optionsScreen;
+    public GameObject mainMenuScreen;
+    public GameObject controlsScreen;
 
     private void Start()
     {
@@ -19,5 +23,29 @@ public class MainMenu : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    public void ShowCreditsScreen()
+    {
+        mainMenuScreen.SetActive(false);
+        creditsScreen.SetActive(true);
+    }
+
+    public void ShowOptionsScreen()
+    {
+
+    }
+
+    public void ShowControlsScreen()
+    {
+        mainMenuScreen.SetActive(false);
+        controlsScreen.SetActive(true);
+    }
+
+    public void ShowMenuScreen()
+    {
+        creditsScreen.SetActive(false);
+        controlsScreen.SetActive(false);
+        mainMenuScreen.SetActive(true);
     }
 }

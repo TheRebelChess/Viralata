@@ -91,6 +91,8 @@ GameObject:
   - component: {fileID: 954197051653900351}
   - component: {fileID: 954197051653900352}
   - component: {fileID: 986025182}
+  - component: {fileID: 986025189}
+  - component: {fileID: 3495979197170384965}
   m_Layer: 0
   m_Name: PlayerFinal
   m_TagString: Player
@@ -133,9 +135,11 @@ MonoBehaviour:
   currentXp: 0
   xpRequiredByLv: 010000000200000003000000
   strength: 1
+  maxHealth: 10
+  invincibilityTime: 1
   aimLockCamera: {fileID: 0}
   playerCamera: {fileID: 0}
-  attackOrigin: {fileID: 0}
+  attackOrigin: {fileID: 954197052306421118}
   hitableMask:
     serializedVersion: 2
     m_Bits: 768
@@ -298,6 +302,32 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &986025189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954197051653900353}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a941fc259b1682749833ffa77e89e8d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
+  gameOverTimer: 3
+--- !u!114 &3495979197170384965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954197051653900353}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef605d28e228b7a488d5eb0e35b3ae9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &954197052306421119
 GameObject:
   m_ObjectHideFlags: 0

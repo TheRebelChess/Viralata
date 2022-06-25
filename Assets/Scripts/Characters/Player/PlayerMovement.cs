@@ -111,7 +111,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-       // AddInputActionsCallbacks();
+       AddInputActionsCallbacks();
+       gameManager.inPlayerInteraction = false;
     }
 
     // Update is called once per frame
@@ -407,6 +408,7 @@ public class PlayerMovement : MonoBehaviour
                     AimAt(hit.transform);
 
                     playerInteraction.enabled = true;
+                    gameManager.inPlayerInteraction = true;
                     playerInteraction.SetNPC(hit.transform.gameObject);
 
                     this.enabled = false;
@@ -584,7 +586,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void TakeHit(int damage)
     {
-        if (isInvincible)
+        if (isInvincible || isBlocking)
         {
             return;
         }

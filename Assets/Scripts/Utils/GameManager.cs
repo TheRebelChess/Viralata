@@ -8,8 +8,11 @@ public class GameManager : MonoBehaviour
 {
     public GameObject hudCanvas;
     public GameObject gameOverCanvas;
+    public GameObject pauseScreen;
     public CinemachineInputProvider cinemachineInputProvider;
     public Inventory inventoryScript;
+    public bool isPaused;
+    public bool inPlayerInteraction;
 
     public void Start()
     {
@@ -22,19 +25,44 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        Time.timeScale = 0f;
-        hudCanvas.SetActive(false);
-        cinemachineInputProvider.enabled = false;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        gameOverCanvas.SetActive(true);
+        SceneManager.LoadScene(2);
+        //Time.timeScale = 0f;
+        //hudCanvas.SetActive(false);
+        //cinemachineInputProvider.enabled = false;
+        //Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.None;
+        //gameOverCanvas.SetActive(true);
+    }
+
+    public void PauseGame()
+    {
+        if (isPaused)
+        {
+            isPaused = false;
+            Time.timeScale = 1f;
+            hudCanvas.SetActive(true);
+            cinemachineInputProvider.enabled = true;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            pauseScreen.SetActive(false);
+        }
+        else
+        {
+            isPaused = true;
+            Time.timeScale = 0f;
+            hudCanvas.SetActive(false);
+            cinemachineInputProvider.enabled = false;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            pauseScreen.SetActive(true);
+        }
     }
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    SceneManager.LoadScene(0);
-        //}
+        if (Input.GetKeyDown(KeyCode.Escape) && !inPlayerInteraction)
+        {
+            PauseGame();
+        }
     }
 }

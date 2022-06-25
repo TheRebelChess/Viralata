@@ -142,6 +142,7 @@ public class EnemyMovement : MonoBehaviour
 
         if (health <= 0)
         {
+            isDead = true;
             GetComponent<Collider>().enabled = false;
             navMeshAgent.enabled = false;
             audioSource.PlayOneShot(deathSFX);
