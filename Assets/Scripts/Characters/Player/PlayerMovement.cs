@@ -403,18 +403,23 @@ public class PlayerMovement : MonoBehaviour
 
                 if (hit.transform.GetComponent<QuestGiver>())
                 {
-                    hit.transform.GetComponent<QuestGiver>()?.OnInteract();
-
-                    AimAt(hit.transform);
-
-                    playerInteraction.enabled = true;
-                    gameManager.inPlayerInteraction = true;
-                    playerInteraction.SetNPC(hit.transform.gameObject);
-
-                    this.enabled = false;
+                    ActivateInteraction(hit.transform.gameObject);
                 }
             }
         }
+    }
+
+    public void ActivateInteraction(GameObject interactableObj)
+    {
+        interactableObj.GetComponent<IInteractable>().OnInteract();
+
+        AimAt(interactableObj.transform);
+
+        playerInteraction.enabled = true;
+        gameManager.inPlayerInteraction = true;
+        playerInteraction.SetInteractableObj(interactableObj.transform.gameObject);
+
+        this.enabled = false;
     }
 
     private void OnBlockPressed(UnityEngine.InputSystem.InputAction.CallbackContext obj)

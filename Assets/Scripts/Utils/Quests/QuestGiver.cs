@@ -15,7 +15,7 @@ public class QuestToGive
     public string Dialog;
 }
 
-public class QuestGiver : MonoBehaviour
+public class QuestGiver : MonoBehaviour, IInteractable
 {
     
     public List<QuestToGive> allQuests;
@@ -83,7 +83,7 @@ public class QuestGiver : MonoBehaviour
         questOptions.Add(questText.GetComponent<TMP_Text>());
     }
 
-    public void SelectQuest()
+    public void SelectOption()
     {
         Quest quest = allQuests[selectQuestIndex].quest;
 
