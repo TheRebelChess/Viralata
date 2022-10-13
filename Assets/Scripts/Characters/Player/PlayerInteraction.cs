@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    private QuestGiver npcToInteract;
+    private IInteractable interactableGO;
     private PlayerMovement playerMovement;
 
     // Start is called before the first frame update
@@ -16,21 +16,21 @@ public class PlayerInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            npcToInteract.NextOption();
+            interactableGO.NextOption();
         }
-        else if (Input.GetKeyDown(KeyCode.W))
+        else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
-            npcToInteract.PreviousOption();
+            interactableGO.PreviousOption();
         }
         else if (Input.GetKeyDown(KeyCode.Return))
         {
-            npcToInteract.SelectQuest();
+            interactableGO.SelectOption();
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
-            npcToInteract.ExitInteraction();
+            interactableGO.ExitInteraction();
 
             playerMovement.enabled = true;
             playerMovement.AimAt(null);
@@ -38,8 +38,8 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    public void SetNPC(GameObject npc)
+    public void SetInteractableObj(GameObject interactableObj)
     {
-        npcToInteract = npc.GetComponent<QuestGiver>();
+        interactableGO = interactableObj.GetComponent<IInteractable>();
     }
 }

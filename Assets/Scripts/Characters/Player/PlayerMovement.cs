@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isBlocking = false;
     private bool canAttack = true;
     private bool isInvincible = false;
+    private bool inventoryActive = false;
 
     public int playerLevel = 1;
     public int currentXp = 0;
@@ -118,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isRolling || isAttacking || isBlocking)
+        if (isRolling || isAttacking || isBlocking || inventoryActive)
         {
             return;
         }
@@ -159,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isAttacking || isBlocking)
+        if (isAttacking || isBlocking || inventoryActive)
         {
             ResetHorizVel();
             return;
@@ -176,6 +177,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ResetHorizVel()
     {
+        playerAnimator.SetBool("move", false);
         rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
     }
 
@@ -365,6 +367,7 @@ public class PlayerMovement : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             canAttack = true;
+            inventoryActive = false;
         }
         else
         {
@@ -373,6 +376,8 @@ public class PlayerMovement : MonoBehaviour
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
             canAttack = false;
+            inventoryActive = true;
+            ResetHorizVel();
         }
     }
 
@@ -403,18 +408,24 @@ public class PlayerMovement : MonoBehaviour
 
                 if (hit.transform.GetComponent<QuestGiver>())
                 {
-                    hit.transform.GetComponent<QuestGiver>()?.OnInteract();
-
-                    AimAt(hit.transform);
-
-                    playerInteraction.enabled = true;
-                    gameManager.inPlayerInteraction = true;
-                    playerInteraction.SetNPC(hit.transform.gameObject);
-
-                    this.enabled = false;
+                    ActivateInteraction(hit.transform.gameObject);
                 }
             }
         }
+    }
+
+    public void ActivateInteraction(GameObject interactableObj)
+    {
+        ResetHorizVel();
+        interactableObj.GetComponent<IInteractable>().OnInteract();
+
+        AimAt(interactableObj.transform);
+
+        playerInteraction.enabled = true;
+        gameManager.inPlayerInteraction = true;
+        playerInteraction.SetInteractableObj(interactableObj.transform.gameObject);
+
+        this.enabled = false;
     }
 
     private void OnBlockPressed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
