@@ -119,6 +119,7 @@ public class PlayerSwitcher : MonoBehaviour, IInteractable
 
             Destroy(charOption);
         }
+        selectCharIndex = 0;
     }
 
     public void ExitInteraction()
