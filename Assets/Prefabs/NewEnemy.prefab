@@ -115,9 +115,9 @@ MonoBehaviour:
   raycastOrigin: {fileID: 2671962945327686267}
   lineOfSight: {fileID: 3643185062219020911}
   swordTrigger: {fileID: 5305399556467007504}
-  timeToStopFollowing: 3
+  timeToStopFollowing: 4
   attackCooldown: 1
-  damage: 2
+  damage: 3
   audioSource: {fileID: 1903603398286402195}
   attackSFX: {fileID: 8300000, guid: f6f03d4e9917c874cb3747bca4bb441f, type: 3}
   deathSFX: {fileID: 8300000, guid: 08dcb8fb670ffda4c8cee65a789c6210, type: 3}
@@ -151,6 +151,7 @@ MonoBehaviour:
   sliderObject: {fileID: 906481679497222088, guid: 82c7673fb580bbe4da5eca72e7f93f7e, type: 3}
   spawnPoint: {fileID: 5305399558091734749}
   canvas: {fileID: 0}
+  enemyHpBar: {fileID: 0}
 --- !u!195 &5280642019487182101
 NavMeshAgent:
   m_ObjectHideFlags: 0

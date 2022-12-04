@@ -47,16 +47,23 @@ public class Enemy : MonoBehaviour
     // TODO(Nicole): Colocar no SO do inimigo
     public float walkingSpeed = 2f;
     public float runningSpeed = 4f;
-    public float health = 4;
+    public float MaxHealth = 4;
+    public float health;
+    public float percHealth;
+
+    public static Enemy Instance;
 
     private void Awake()
     {
+        Instance = this;
         rb = GetComponent<Rigidbody>();
         enemyAnimator = GetComponentInChildren<Animator>();
     }
 
     private void Start()
     {
+        health = MaxHealth;
+
         ChangeState(EnemyMovementStates.PATROL);
 
         baseSpeed = 1f;

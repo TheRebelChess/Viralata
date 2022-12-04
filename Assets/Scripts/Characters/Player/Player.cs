@@ -95,6 +95,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+
+
         if (currentState == PlayerMovementStates.DEAD)
             return;
 
@@ -144,6 +146,8 @@ public class Player : MonoBehaviour
             }
             ChangeState(PlayerMovementStates.IDLE);
         }
+
+      
     }
 
     private void ChangeState(PlayerMovementStates state)

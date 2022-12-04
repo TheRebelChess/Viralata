@@ -8,6 +8,7 @@ public class EnemyHealthBar : MonoBehaviour
     public GameObject sliderObject;
     public Transform spawnPoint;
     public Canvas canvas;
+    public Image enemyHpBar;
 
     private GameObject currentSlider;
     private EnemyMovement enemyScript;
@@ -35,6 +36,16 @@ public class EnemyHealthBar : MonoBehaviour
         {
             currentSlider.gameObject.SetActive(false);
         }
+
+        Enemy.Instance.percHealth = Enemy.Instance.health / Enemy.Instance.MaxHealth;
+
+        enemyHpBar.fillAmount = Enemy.Instance.percHealth;
+
+        if(Enemy.Instance.percHealth < 0)
+        {
+            Enemy.Instance.percHealth = 0;
+        }
+
     }
 
     private void SpawnSlider()

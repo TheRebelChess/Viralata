@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private List<GameObject> itemsInRage;
 
     private BoxCollider swordTrigger;
+    public Image healthFill;
 
     private float currentTargetRotation;
     private float timeToReachTargetRotation;
@@ -58,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
 
     public int strength = 1;
     public float maxHealth = 10f;
+    public float percHealth;
 
     public float invincibilityTime = 1f;
     
@@ -66,6 +69,7 @@ public class PlayerMovement : MonoBehaviour
 
     public Transform attackOrigin;
     public LayerMask hitableMask;
+    public LayerMask NPC;
 
     public QuestSystem questSystem;
     public GameManager gameManager;
@@ -77,6 +81,8 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip blockSFX;
     public AudioClip deathSFX;
 
+    [Header("NPC Interaction")]
+    public GameObject pressToInteract;
 
     // Start is called before the first frame update
     void Start()
@@ -155,7 +161,20 @@ public class PlayerMovement : MonoBehaviour
         {
             playerAnimator.SetBool("move", false);
         }
-        
+
+        PressToTalk();
+
+
+        percHealth = (float)health / (float)maxHealth;
+
+        if(percHealth < 0)
+        {
+            percHealth = 0;
+        }
+
+        healthFill.fillAmount = percHealth;
+
+
     }
 
     private void FixedUpdate()
@@ -400,10 +419,14 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("entrou");
         if (Physics.Raycast(attackOrigin.position, transform.forward, out hit, 2f, hitableMask))
         {
+            
+
             Debug.Log("acertou");
             if (hit.transform.tag == "NPC")
             {
-                
+
+                pressToInteract.SetActive(false);
+
                 hit.transform.GetComponent<QuestTarget>()?.OnInteract();
 
                 if (hit.transform.GetComponent<QuestGiver>())
@@ -411,11 +434,32 @@ public class PlayerMovement : MonoBehaviour
                     ActivateInteraction(hit.transform.gameObject);
                 }
             }
+
+          
+        }    
+
+    }
+
+    void PressToTalk()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(attackOrigin.position, transform.forward, out hit, 2f, hitableMask))
+        {
+            if (hit.transform.tag == "NPC")
+            {
+                pressToInteract.SetActive(true);
+            }
+        }
+
+        else
+        {
+            pressToInteract.SetActive(false);
         }
     }
 
     public void ActivateInteraction(GameObject interactableObj)
     {
+      
         ResetHorizVel();
         interactableObj.GetComponent<IInteractable>().OnInteract();
 

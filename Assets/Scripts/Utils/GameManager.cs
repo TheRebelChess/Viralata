@@ -64,5 +64,7 @@ public class GameManager : MonoBehaviour
         {
             PauseGame();
         }
+
+        print(isPaused);
     }
 }
