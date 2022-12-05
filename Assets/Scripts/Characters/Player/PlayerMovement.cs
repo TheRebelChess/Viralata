@@ -19,7 +19,9 @@ public class PlayerMovement : MonoBehaviour
 
     private List<GameObject> itemsInRage;
 
-    private BoxCollider swordTrigger;
+    public BoxCollider swordTrigger;
+    public BoxCollider daggerTrigger1;
+    public BoxCollider daggerTrigger2;
     public Image healthFill;
 
     private float currentTargetRotation;
@@ -106,8 +108,9 @@ public class PlayerMovement : MonoBehaviour
         speedModifier = runSpeedModifier;
         mainCameraTransform = Camera.main.transform;
 
-        swordTrigger = GetComponentInChildren<BoxCollider>();
         swordTrigger.enabled = false;
+        daggerTrigger1.enabled = false;
+        daggerTrigger2.enabled = false;
 
         shot.SetActive(false);
     }
@@ -320,7 +323,16 @@ public class PlayerMovement : MonoBehaviour
 
     public void EnemyHit(GameObject enemy)
     {
-        swordTrigger.enabled = false;
+        if (playerIndex == 0)
+        {
+            swordTrigger.enabled = false;
+        }
+        else if (playerIndex == 2)
+        {
+            daggerTrigger1.enabled = false;
+            daggerTrigger2.enabled = false;
+        }
+
         bool hasKilled = enemy.GetComponent<EnemyMovement>().TakeHit(attackDamage * strength);
 
         if (hasKilled)
@@ -667,7 +679,13 @@ public class PlayerMovement : MonoBehaviour
             shot.SetActive(true);
         }
         yield return new WaitForSeconds(t);
-        swordTrigger.enabled = true;
+        if (playerIndex == 0)
+            swordTrigger.enabled = true;
+        else if (playerIndex == 2)
+        {
+            daggerTrigger1.enabled = true;
+            daggerTrigger2.enabled = true;
+        }
         if (attackDamage == 5f)
         {
 
@@ -696,7 +714,13 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
         isAttacking = false;
-        swordTrigger.enabled = false;
+        if (playerIndex == 0)
+            swordTrigger.enabled = false;
+        if (playerIndex == 2)
+        {
+            daggerTrigger1.enabled = false;
+            daggerTrigger2.enabled = false;
+        }
     }
 
     public void TakeHit(int damage)

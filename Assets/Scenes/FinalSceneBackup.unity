@@ -4640,6 +4640,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 122e83576ea1b36499ba23964c446e10, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06ea0a653ebdf5949a2572d85eb25efe, type: 3}
+--- !u!65 &176105086 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 332073081, guid: dfc4d583d031f00489db0ee5b3c64a35, type: 3}
+  m_PrefabInstance: {fileID: 954197051515521919}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &177174197
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13077,6 +13082,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 0}
+  swordTrigger: {fileID: 0}
+  daggerTrigger1: {fileID: 0}
+  daggerTrigger2: {fileID: 0}
   healthFill: {fileID: 0}
   playerLevel: 1
   currentXp: 0
@@ -42637,9 +42645,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2117500988}
     - target: {fileID: 954197051653900350, guid: dfc4d583d031f00489db0ee5b3c64a35, type: 3}
+      propertyPath: swordTrigger
+      value: 
+      objectReference: {fileID: 176105086}
+    - target: {fileID: 954197051653900350, guid: dfc4d583d031f00489db0ee5b3c64a35, type: 3}
       propertyPath: aimLockCamera
       value: 
       objectReference: {fileID: 1992231773}
+    - target: {fileID: 954197051653900350, guid: dfc4d583d031f00489db0ee5b3c64a35, type: 3}
+      propertyPath: daggerTrigger1
+      value: 
+      objectReference: {fileID: 422783075}
+    - target: {fileID: 954197051653900350, guid: dfc4d583d031f00489db0ee5b3c64a35, type: 3}
+      propertyPath: daggerTrigger2
+      value: 
+      objectReference: {fileID: 285796272}
     - target: {fileID: 954197051653900350, guid: dfc4d583d031f00489db0ee5b3c64a35, type: 3}
       propertyPath: inventoryScript
       value: 
