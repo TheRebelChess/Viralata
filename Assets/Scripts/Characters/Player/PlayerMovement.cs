@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Animator playerAnimator;
+    [HideInInspector]
+    public Animator playerAnimator;
 
     private PlayerInteraction playerInteraction;
 
@@ -68,6 +69,7 @@ public class PlayerMovement : MonoBehaviour
     public CinemachineVirtualCamera playerCamera;
 
     public Transform attackOrigin;
+    public Transform shot;
     public LayerMask hitableMask;
     public LayerMask NPC;
 
@@ -83,6 +85,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("NPC Interaction")]
     public GameObject pressToInteract;
+
+    [HideInInspector]
+    public int playerIndex = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -103,7 +108,8 @@ public class PlayerMovement : MonoBehaviour
 
         swordTrigger = GetComponentInChildren<BoxCollider>();
         swordTrigger.enabled = false;
-        
+
+        shot.gameObject.SetActive(false);
     }
 
     private void OnDestroy()
@@ -130,23 +136,26 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (isPreparingAttack)
+        if (playerIndex == 0)
         {
-            attackTimer += Time.deltaTime;
-
-            if (attackTimer > maxAttackDelay)
+            if (isPreparingAttack)
             {
-                attackTimer = 0;
-                isPreparingAttack = false;
-                isAttacking = true;
-                attackDamage = 5;
-                ResetHorizVel();
-                playerAnimator.SetTrigger("heavyAttack");
-                StartCoroutine(AttackTimer(1f));
+                attackTimer += Time.deltaTime;
 
-                return;
+                if (attackTimer > maxAttackDelay)
+                {
+                    attackTimer = 0;
+                    isPreparingAttack = false;
+                    isAttacking = true;
+                    attackDamage = 5;
+                    ResetHorizVel();
+                    playerAnimator.SetTrigger("heavyAttack");
+                    StartCoroutine(AttackTimer(1f));
+
+                    return;
+                }
+
             }
-
         }
 
         movementInput = input.playerActions.Movement.ReadValue<Vector2>();
@@ -474,7 +483,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnBlockPressed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (isAttacking || isRolling)
+        if (isAttacking || isRolling || (playerIndex == 1) || (playerIndex == 2))
             return;
 
         isBlocking = true;
@@ -511,17 +520,34 @@ public class PlayerMovement : MonoBehaviour
         isAttacking = true;
         //ResetHorizVel();
 
-        if (attackTimer >= heavyAttackDelay)
+        if (playerIndex == 0)
         {
-            playerAnimator.SetTrigger("heavyAttack");
-            attackDamage = 5;
-            StartCoroutine(AttackTimer(1f));
+            if (attackTimer >= heavyAttackDelay)
+            {
+                playerAnimator.SetTrigger("heavyAttack");
+                attackDamage = 5;
+                StartCoroutine(AttackTimer(1f));
+            }
+            else
+            {
+                playerAnimator.SetTrigger("attack");
+                attackDamage = 3;
+                StartCoroutine(AttackTimer(.5f));
+            }
         }
-        else
+
+        else if(playerIndex == 1)
+        {
+            playerAnimator.SetTrigger("attack");
+            attackDamage = 5;
+            StartCoroutine(AttackTimer(.5f));
+        }
+    
+        else if(playerIndex == 2)
         {
             playerAnimator.SetTrigger("attack");
             attackDamage = 1;
-            StartCoroutine(AttackTimer(.5f));
+            StartCoroutine(AttackTimer(.3f));
         }
 
 
@@ -614,7 +640,21 @@ public class PlayerMovement : MonoBehaviour
         speedModifier = rollSpeedModifier;
         currentSpeed = rollSpeedModifier;
         playerAnimator.speed = 1.3f;
-        yield return new WaitForSeconds(.9f);
+        switch (playerIndex)
+        {
+            case 0:
+                yield return new WaitForSeconds(.9f);
+                break;
+            case 1:
+                yield return new WaitForSeconds(.6f);
+                break;
+            case 2:
+                yield return new WaitForSeconds(.4f);
+                break;
+            default:
+                yield return new WaitForSeconds(.9f);
+                break;
+        }
         playerAnimator.speed = 1f;
         isRolling = false;
         speedModifier = previousSpeed;
@@ -622,6 +662,10 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator AttackTimer(float t)
     {
+        if (playerIndex == 1)
+        {
+            shot.gameObject.SetActive(true);
+        }
         yield return new WaitForSeconds(t);
         swordTrigger.enabled = true;
         if (attackDamage == 5f)
@@ -634,7 +678,23 @@ public class PlayerMovement : MonoBehaviour
             audioSource.PlayOneShot(lightAttackSFX);
         }
         Attack();
-        yield return new WaitForSeconds(.5f);
+
+        switch (playerIndex)
+        {
+            case 0:
+                yield return new WaitForSeconds(.5f);
+                break;
+            case 1:
+                yield return new WaitForSeconds(.1f);
+                shot.gameObject.SetActive(false);
+                break;
+            case 2:
+                yield return new WaitForSeconds(.4f);
+                break;
+            default:
+                yield return new WaitForSeconds(.5f);
+                break;
+        }
         isAttacking = false;
         swordTrigger.enabled = false;
     }

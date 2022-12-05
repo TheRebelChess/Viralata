@@ -65,6 +65,8 @@ public class PlayerSwitcher : MonoBehaviour, IInteractable
             if (selectCharIndex + numPlayerChars == i)
             {
                 player.transform.GetChild(i).gameObject.SetActive(true);
+                player.GetComponent<PlayerMovement>().playerAnimator = player.transform.GetChild(i).GetComponent<Animator>();
+                player.GetComponent<PlayerMovement>().playerIndex = selectCharIndex;
             }
             else
             {
