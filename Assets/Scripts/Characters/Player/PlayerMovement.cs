@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
     public CinemachineVirtualCamera playerCamera;
 
     public Transform attackOrigin;
-    public Transform shot;
+    public GameObject shot;
     public LayerMask hitableMask;
     public LayerMask NPC;
 
@@ -109,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
         swordTrigger = GetComponentInChildren<BoxCollider>();
         swordTrigger.enabled = false;
 
-        shot.gameObject.SetActive(false);
+        shot.SetActive(false);
     }
 
     private void OnDestroy()
@@ -664,7 +664,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (playerIndex == 1)
         {
-            shot.gameObject.SetActive(true);
+            shot.SetActive(true);
         }
         yield return new WaitForSeconds(t);
         swordTrigger.enabled = true;
@@ -686,7 +686,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case 1:
                 yield return new WaitForSeconds(.1f);
-                shot.gameObject.SetActive(false);
+                shot.SetActive(false);
                 break;
             case 2:
                 yield return new WaitForSeconds(.4f);

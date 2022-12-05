@@ -42615,7 +42615,7 @@ PrefabInstance:
     - target: {fileID: 954197051653900350, guid: dfc4d583d031f00489db0ee5b3c64a35, type: 3}
       propertyPath: shot
       value: 
-      objectReference: {fileID: 500684032}
+      objectReference: {fileID: 500684031}
     - target: {fileID: 954197051653900350, guid: dfc4d583d031f00489db0ee5b3c64a35, type: 3}
       propertyPath: NPC.m_Bits
       value: 512
